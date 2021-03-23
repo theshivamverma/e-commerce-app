@@ -18,10 +18,13 @@ export default function mockServer() {
         server.create("product", {
             id: faker.random.uuid(),
             name: faker.commerce.productName(),
+            desc: faker.commerce.productDescription(),
             image: faker.random.image(),
             price: faker.commerce.price(),
+            actualPrice: faker.random.arrayElement([1999, 2999, 4999]),
             material: faker.commerce.productMaterial(),
             brand: faker.lorem.word(),
+            isWishlist: false,
             inStock: faker.random.boolean(),
             fastDelivery: faker.random.boolean(),
             ratings: faker.random.arrayElement([1, 2, 3, 4, 5]),

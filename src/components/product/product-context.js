@@ -1,29 +1,8 @@
-import { createContext, useContext, useEffect, useReducer, useState } from "react"
+import { createContext, useContext, useEffect, useReducer } from "react"
 import axios from "axios"
+import {productReducer}  from "../product"
 
 const ProductContext = createContext();
-
-const productReducer = (state, action) => {
-    switch(action.type){
-        case "LOADDATA":
-            return {...state, products: action.payload}
-        case "ADDTOWISHLIST":
-            return {
-                ...state, 
-                products: state.products.map(product => {
-                    if(product.id === action.payload.id){
-                       return {
-                         ...product,
-                         isWishlist: !action.payload.isWishlist,
-                       };
-                    }
-                    else return product
-                })
-            }
-        default: 
-            return
-    }
-}
 
 export function ProductProvider( { children } ){
 
@@ -36,7 +15,7 @@ export function ProductProvider( { children } ){
                     const { data, status } = await axios.get("/api/products")
                     if(status === 200){
                         console.log("Data found", data.products)
-                        dispatch({type: "LOADDATA", payload: data.products})
+                        dispatch({type: "LOAD_DATA", payload: data.products})
                     }
                 }catch(error){
                     console.log(error)

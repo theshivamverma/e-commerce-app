@@ -1,4 +1,4 @@
-import { useProduct } from "../contexts/product-context"
+import {useProduct} from "../product"
 
 export default function ProductCard( { product } ){
     const { dispatch } = useProduct();
@@ -7,17 +7,20 @@ export default function ProductCard( { product } ){
         <div className="product-img">
           <img src={product.image} alt="" />
         </div>
-        <h1 className="product-heading mt1">
-          {product.name}
+        <h1 className="product-heading mt1">{product.name}</h1>
+        <button class="btn btn-icon wishlist">
           <i
             className={
               product.isWishlist
-                ? `fas fa-heart wishlist active`
-                : `fas fa-heart wishlist`
+                ? `fas fa-heart icon-sm wishlist-icon active`
+                : `fas fa-heart icon-sm wishlist-icon`
             }
-            onClick={() => dispatch({ type: "ADDTOWISHLIST", payload: product })}
+            onClick={() =>
+              dispatch({ type: "ADD_TO_WISHLIST", payload: product })
+            }
           ></i>
-        </h1>
+        </button>
+
         <p className="product-desc mt05">{product.desc.substring(0, 20)}</p>
         <h2 className="price mt05">{`Rs. ${product.price}`}</h2>
         <div className="og-price">
@@ -28,5 +31,5 @@ export default function ProductCard( { product } ){
           Add to Cart
         </button>
       </div>
-    );
+    )
 }

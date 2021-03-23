@@ -54,7 +54,11 @@ export default function mockServer() {
 
     routes(){
         this.get("/api/products", (schema) => {
-            return schema.products.all()
+          return schema.products.all()
+        })
+
+        this.get("/api/cart", (schema) => {
+          return schema.carts.all()
         })
     }
   });

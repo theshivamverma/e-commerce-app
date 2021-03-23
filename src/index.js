@@ -2,22 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import mockServer from "./api/mock.server"
-import { ProductProvider } from "./contexts/product-context"
+import {ProductProvider}  from "./components/product"
+import {CartProvider} from "./components/cart"
 
 mockServer();
 
 ReactDOM.render(
   <React.StrictMode>
     <ProductProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </ProductProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

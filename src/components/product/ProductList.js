@@ -1,7 +1,7 @@
-import { useProduct } from "../contexts/product-context"
-import ProductCard from "./ProductCard"
+import {useProduct}  from "../product"
+import {ProductCard} from "../product"
 
-export default function Product(){
+export default function ProductList(){
     const { products }= useProduct()
     
     return (

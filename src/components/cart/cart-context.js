@@ -21,10 +21,10 @@ export function CartProvider( { children } ){
                 }
             }
         )()
-    })
+    },[])
 
     return (
-        <CartContext.Provider value={ { cart: state.cart, dispatch } }>
+        <CartContext.Provider value={ { cartItems: state.cart, cartDispatch : dispatch } }>
             {children}
         </CartContext.Provider>
     )

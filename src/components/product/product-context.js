@@ -25,7 +25,7 @@ export function ProductProvider( { children } ){
     }, [])
 
     return(
-        <ProductContext.Provider value={ {products : state.products, dispatch} }>
+        <ProductContext.Provider value={ {products : state.products, productDispatch: dispatch} }>
             {children}
         </ProductContext.Provider>
     )

@@ -15,7 +15,7 @@ export default function mockServer() {
 
     seeds(server) {
       [...Array(50)].map((item) => {
-        server.create("product", {
+        return server.create("product", {
             id: faker.random.uuid(),
             name: faker.commerce.productName(),
             desc: faker.commerce.productDescription(),
@@ -25,6 +25,7 @@ export default function mockServer() {
             material: faker.commerce.productMaterial(),
             brand: faker.lorem.word(),
             isWishlist: false,
+            isAddedToCart: false,
             inStock: faker.random.boolean(),
             fastDelivery: faker.random.boolean(),
             ratings: faker.random.arrayElement([1, 2, 3, 4, 5]),

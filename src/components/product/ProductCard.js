@@ -1,7 +1,9 @@
+import { useCart } from "../cart";
 import {useProduct} from "../product"
 
 export default function ProductCard( { product } ){
-    const { dispatch } = useProduct();
+    const { productDispatch } = useProduct();
+    const { cartDispatch } = useCart();
     return (
       <div className="card-product p1 card-shadow">
         <div className="product-img">
@@ -16,7 +18,7 @@ export default function ProductCard( { product } ){
                 : `fas fa-heart icon-sm wishlist-icon`
             }
             onClick={() =>
-              dispatch({ type: "ADD_TO_WISHLIST", payload: product })
+              productDispatch({ type: "ADD_TO_WISHLIST", payload: product })
             }
           ></i>
         </button>
@@ -27,9 +29,17 @@ export default function ProductCard( { product } ){
           <span className="price-cut">{`Rs. ${product.actualPrice}`}</span>
           <span className="discount">(55% Off)</span>
         </div>
-        <button className="btn btn-col btn-primary mt1 border-round">
-          Add to Cart
+        <button
+          className="btn btn-col btn-primary mt1 border-round"
+          disabled={product.isAddedToCart}
+          onClick={() => {
+            cartDispatch({ type: "ADD_TO_CART", payload: product });
+            productDispatch({ type: "ITEM_ADDED_TO_CART", payload: product });
+            console.log({ product });
+          }}
+        >
+          {product.isAddedToCart === true ? `Go to Cart` : `Add to Cart`}
         </button>
       </div>
-    )
+    );
 }

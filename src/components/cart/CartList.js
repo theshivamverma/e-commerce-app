@@ -3,7 +3,7 @@ import { CartCard } from "../cart"
 
 export default function CartList() {
 
-    const cartItems = useCart()
+    const { cartItems } = useCart()
 
     return(
         cartItems.length > 0 ? 

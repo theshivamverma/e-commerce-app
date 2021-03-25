@@ -1,1 +1,8 @@
 @import url("https://panda-ui.netlify.app/style.css");
+
+.App{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    padding-top: 80px;
+}

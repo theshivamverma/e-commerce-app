@@ -1,19 +1,20 @@
-import { useState } from "react";
 import {ProductList} from "./components/product";
 import {CartList} from "./components/cart"
+import { Navbar, useNav } from "./components/nav";
+import WishlistList from "./components/wishlist/WishlistList";
 
 function App() {
 
-  const [route, setRoute] = useState("product")
+  const { route } = useNav();
 
-  return ( 
+  return (
     <div className="App">
-      <button className="btn btn-col btn-primary" onClick={() => setRoute("product")}>Products</button>
-      <button className="btn btn-col btn-primary" onClick={() => setRoute("cart")}>Cart</button>
-      {route === "product" && <ProductList />}
+      <Navbar />
+      {route === "products" && <ProductList />}
       {route === "cart" && <CartList />}
+      {route === "wishlist" && <WishlistList />}
     </div>
-  )
+  );
 }
 
 export default App;

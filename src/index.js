@@ -5,6 +5,7 @@ import App from './App';
 import mockServer from "./api/mock.server"
 import {ProductProvider}  from "./components/product"
 import {CartProvider} from "./components/cart"
+import {NavProvider} from "./components/nav"
 
 mockServer();
 
@@ -12,7 +13,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ProductProvider>
       <CartProvider>
-        <App />
+        <NavProvider>
+          <App />
+        </NavProvider>
       </CartProvider>
     </ProductProvider>
   </React.StrictMode>,

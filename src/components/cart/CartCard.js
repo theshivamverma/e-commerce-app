@@ -6,15 +6,15 @@ export default function CartCard({ cartItem }) {
   const { productDispatch } = useProduct();
 
   return (
-    <div className="card-cart p1 bd1 bdGray">
+    <div className="card-cart p-1 bd1 bdGray">
       <div className="cart-details">
         <div className="cart-product-img">
           <img src={cartItem.image} alt="" />
         </div>
         <div className="cart-product-desc">
           <h1 className="product-heading">{cartItem.name}</h1>
-          <p className="product-desc mt05">{cartItem.desc.substring(0, 20)}</p>
-          <div className="change-quantity mt05">
+          <p className="product-desc mt-05">{cartItem.desc.substring(0, 20)}</p>
+          <div className="change-quantity mt-05">
             <button
               className="btn btn-icon btn-cart"
               disabled={cartItem.quantity > 1 ? false : true}
@@ -24,7 +24,7 @@ export default function CartCard({ cartItem }) {
             >
               <i className="fas fa-minus icon-xxsm"></i>
             </button>
-            <h2 className="quantity bd1 bdGray mrl05">{cartItem.quantity}</h2>
+            <h2 className="quantity bd1 bdGray m-0-05">{cartItem.quantity}</h2>
             <button
               className="btn btn-icon btn-cart"
               onClick={() =>
@@ -35,7 +35,7 @@ export default function CartCard({ cartItem }) {
             </button>
           </div>
           <button
-            className="btn btn-link colorRed mt1"
+            className="btn btn-link colorRed mt-1"
             onClick={() => {
               cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem })
               productDispatch({ type: "ITEM_REMOVED_FROM_CART", payload: cartItem });
@@ -44,9 +44,9 @@ export default function CartCard({ cartItem }) {
             Remove
           </button>
           <button 
-            className="btn btn-link ml1 mt1"
+            className="btn btn-link ml-1 mt-1"
             onClick={() => {
-              productDispatch({ type: "ADD_TO_WISHLIST", payload: cartItem });
+              productDispatch({ type: "MOVE_TO_WISHLIST", payload: cartItem });
               cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem });
               productDispatch({ type: "ITEM_REMOVED_FROM_CART", payload: cartItem });
             }}

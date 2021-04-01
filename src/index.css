@@ -1,8 +1,51 @@
-@import url("https://panda-ui.netlify.app/style.css");
+.App {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  padding-top: 80px;
+}
 
-.App{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.leftfixed-nav {
+  top: 80px;
+}
+
+.btn-menu {
+  display: initial;
+  position: fixed;
+  bottom: 2% !important;
+  right: 2% !important;
+  z-index: 9 !important;
+}
+
+.icon-lg {
+  font-size: 1.3rem !important;
+}
+
+.leftfixed-nav {
+  padding: 1rem 2rem;
+}
+.groupinput {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.groupinput > label {
+  margin-right: 0.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .App {
+    padding: 0 2rem 0 0;
+    padding-left: calc(25% + 2rem);
     padding-top: 80px;
+  }
+  .nav {
+    left: 0;
+  }
+  .btn-menu {
+    display: none;
+  }
 }

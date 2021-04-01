@@ -14,6 +14,18 @@ export default function productReducer(state, action){
             } else return product;
           }),
         };
+      case "MOVE_TO_WISHLIST":
+        return {
+          ...state,
+          products: state.products.map((product) => {
+            if (product.id === action.payload.id) {
+              return {
+                ...product,
+                isWishlist: true,
+              };
+            } else return product;
+          }),
+        };
       case "ITEM_ADDED_TO_CART":
         return {
           ...state,

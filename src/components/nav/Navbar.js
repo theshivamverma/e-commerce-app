@@ -8,15 +8,15 @@ export default function Navbar() {
   const { products } = useProduct();
   const wishListArr = products.filter((product) => product.isWishlist)
   return (
-    <nav className="nav p1 top-fixed">
-      <h1>Product waale</h1>
+    <nav className="nav p-1 top-fixed box-shadow-down">
+      <h1>Lé Product</h1>
       <div className="menu">
         <button
           className="btn btn-icon icon-text-down"
           onClick={() => setRoute("products")}
         >
           <i className="fas fa-store icon-lg"></i>
-          <p className="mt05">Store</p>
+          <p className="mt-05">Store</p>
         </button>
         <button
           className="btn btn-icon icon-text-down ml1"
@@ -29,7 +29,7 @@ export default function Navbar() {
               </span>
             )}
           </i>
-          <p className="mt05">Cart</p>
+          <p className="mt-05">Cart</p>
         </button>
         <button
           className="btn btn-icon icon-text-down ml1"
@@ -42,7 +42,7 @@ export default function Navbar() {
               </span>
             )}
           </i>
-          <p className="mt05">Wishlist</p>
+          <p className="mt-05">Wishlist</p>
         </button>
       </div>
     </nav>

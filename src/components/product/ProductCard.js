@@ -7,11 +7,11 @@ export default function ProductCard( { product } ){
     const { cartDispatch } = useCart();
     const { setRoute } = useNav();
     return (
-      <div className="card-product p1 card-shadow">
+      <div className="card-product p-1 card-shadow">
         <div className="product-img">
           <img src={product.image} alt="" />
         </div>
-        <h1 className="product-heading mt1">{product.name}</h1>
+        <h1 className="product-heading mt-1">{product.name}</h1>
         <button
           class="btn btn-icon wishlist"
           onClick={() =>
@@ -27,23 +27,24 @@ export default function ProductCard( { product } ){
           ></i>
         </button>
 
-        <p className="product-desc mt05">{product.desc.substring(0, 20)}</p>
-        <h2 className="price mt05">{`Rs. ${product.price}`}</h2>
+        <p className="product-desc mt-05">{product.desc.substring(0, 20)}</p>
+        <h2 className="price mt-05">{`Rs. ${product.price}`}</h2>
         <div className="og-price">
           <span className="price-cut">{`Rs. ${product.actualPrice}`}</span>
           <span className="discount">(55% Off)</span>
         </div>
-        
+          <p class="font-size-sm light">{product.inStock ? "Available" : "Not in stock"}</p>
+          <p class="font-size-sm light">{product.fastDelivery ? "Super Fast Delivery" : "Regular Shipping"}</p>
           {product.isAddedToCart === true ? 
           <button
-            className="btn btn-col btn-secondary mt1 border-round"
+            className="btn btn-col btn-secondary mt-1 border-round"
             onClick={() => setRoute("cart")} 
           >
             Go to Cart
           </button> 
           : 
           <button
-            className="btn btn-col btn-primary mt1 border-round"
+            className="btn btn-col btn-primary mt-1 border-round"
             onClick={() => {
               cartDispatch({ type: "ADD_TO_CART", payload: product });
               productDispatch({ type: "ITEM_ADDED_TO_CART", payload: product });

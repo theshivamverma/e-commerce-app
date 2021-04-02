@@ -1,7 +1,33 @@
 import { useState } from "react";
+import { useProduct } from "../product";
 
 export default function Sidebar({ state, dispatch }) {
+  const { products } = useProduct();
+
   const [menuState, setMenuState] = useState(false);
+
+  const [priceLimit, setPriceLimit] = useState(499)
+
+  function getBrands(productList) {
+    let brandArr = [];
+    productList.forEach((product) => {
+      if (!brandArr.includes(product.brand)) {
+        brandArr.push(product.brand);
+      }
+    });
+    return brandArr;
+  }
+
+  const brands = getBrands(products);
+
+  function setBrand(e, brandName){
+    if(e.target.checked){
+      dispatch({ type: "ADD_BRAND_TO_FILTER", payload: brandName });
+    } else{
+      dispatch({ type: "REMOVE_BRAND_FROM_FILTER", payload: brandName });
+    }
+  }
+
   return (
     <nav
       className={
@@ -35,7 +61,7 @@ export default function Sidebar({ state, dispatch }) {
           <input
             type="radio"
             name="sort"
-            onChange={() => dispatch({ type: "SORT_LOW_TO_HIGH" })}
+            onChange={() => dispatch({ type: "SORT", payload: "LOW_TO_HIGH" })}
           />
         </span>
         <span className="groupinput">
@@ -43,7 +69,7 @@ export default function Sidebar({ state, dispatch }) {
           <input
             type="radio"
             name="sort"
-            onChange={() => dispatch({ type: "SORT_HIGH_TO_LOW" })}
+            onChange={() => dispatch({ type: "SORT", payload: "HIGH_TO_LOW" })}
           />
         </span>
       </fieldset>
@@ -53,7 +79,7 @@ export default function Sidebar({ state, dispatch }) {
           <label>Include Out of Stock</label>
           <input
             type="checkbox"
-            name="sort"
+            name="filter"
             onChange={() => dispatch({ type: "INCLUDE_OUT_OF_STOCK" })}
           />
         </span>
@@ -61,10 +87,46 @@ export default function Sidebar({ state, dispatch }) {
           <label>Fast Delivery Only</label>
           <input
             type="checkbox"
-            name="sort"
+            name="filter"
             onChange={() => dispatch({ type: "SHOW_FAST_DELIVERY_ONLY" })}
           />
         </span>
+      </fieldset>
+      <fieldset className="mt-1">
+        <legend>Brands</legend>
+        {brands.map((brand, index) => {
+          return (
+            <span className="groupinput" key={index}>
+              <label>{brand}</label>
+              <input
+                type="checkbox"
+                name="brand"
+                onChange={(e) => setBrand(e, brand)}
+              />
+            </span>
+          );
+        })}
+      </fieldset>
+      <fieldset className="mt-1">
+        <legend>Price range</legend>
+        <span className="groupinput">
+          <input
+            className="price-slider"
+            type="range"
+            min="0"
+            max="999"
+            value={priceLimit}
+            step="50"
+            onChange={(e) => {
+              setPriceLimit(e.target.value)
+              dispatch({ type: "SET_PRICE_RANGE", payload: e.target.value })
+            }}
+          />
+        </span>
+        <p className="font-size-m medium price-display">
+          <span>0</span>
+          <span>{priceLimit}</span>
+        </p>
       </fieldset>
     </nav>
   );

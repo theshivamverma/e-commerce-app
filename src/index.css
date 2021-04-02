@@ -27,19 +27,33 @@
 .groupinput {
   display: block;
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 3rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 .groupinput > label {
   margin-right: 0.5rem;
 }
 
+.price-slider{
+  width: 100%;
+}
+
+.price-display{
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 3rem;
+}
+
 @media screen and (min-width: 768px) {
   .App {
+    padding: 0 2rem;
+    padding-top: 80px;
+  }
+  .App.products{
     padding: 0 2rem 0 0;
-    padding-left: calc(25% + 2rem);
+    padding-left: calc(25% + 2rem) !important;
     padding-top: 80px;
   }
   .nav {

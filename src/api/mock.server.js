@@ -23,7 +23,13 @@ export default function mockServer() {
             price: faker.commerce.price(),
             actualPrice: faker.random.arrayElement([1999, 2999, 4999]),
             material: faker.commerce.productMaterial(),
-            brand: faker.lorem.word(),
+            brand: faker.random.arrayElement([
+              "Bata",
+              "Reebok",
+              "Nike",
+              "Addidas",
+              "Puma"
+            ]),
             isWishlist: false,
             isAddedToCart: false,
             inStock: faker.random.boolean(),

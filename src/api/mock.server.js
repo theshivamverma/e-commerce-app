@@ -67,6 +67,20 @@ export default function mockServer() {
         this.get("/api/cart", (schema) => {
           return schema.carts.all()
         })
+
+        this.post("/api/addToCart", (schema, request) => {
+          let cartItem = JSON.parse(request.requestBody);
+
+          if (schema.carts.find(cartItem.id)) {
+            let cartItemToUpdate = schema.carts.find(cartItem.id);
+            return cartItemToUpdate.update({
+              quantity: cartItemToUpdate.quantity + 1,
+            });
+          } else {
+            cartItem.quantity = 1;
+            return schema.carts.create(cartItem);
+          }
+        })
     }
   });
 }

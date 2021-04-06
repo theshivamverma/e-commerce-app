@@ -1,20 +1,44 @@
 import { useCart } from "../cart";
-import { useNav } from "../nav";
 import {useProduct} from "../product"
+import ToastSuccess from "../Toast/ToastSucess";
+import { Link } from "react-router-dom"
+import { useState } from "react";
+import axios from "axios"
 
 export default function ProductCard( { product } ){
     const { productDispatch } = useProduct();
     const { cartDispatch } = useCart();
-    const { setRoute } = useNav();
+    const [cartToast, setCartToast] = useState(false)
+    const [wishlistToast, setWishlistToast] = useState(false)
+
+    async function addToCartApi(data) {
+        try {
+          const { status } = await axios.post("/api/addToCart", {
+            ...data,
+          });
+          if (status === 201){
+            cartDispatch({ type: "ADD_TO_CART", payload: data });
+          }
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+      }
+
+    function clickHandler(data){
+      addToCartApi(data)
+    }
+
     return (
       <div className="card-product p-1 card-shadow">
         <div className="product-img">
           <img src={product.image} alt="" />
           <button
             class="btn btn-icon wishlist"
-            onClick={() =>
+            onClick={() => {
               productDispatch({ type: "ADD_TO_WISHLIST", payload: product })
-            }
+              setWishlistToast(true)
+            }}
           >
             <i
               className={
@@ -40,23 +64,30 @@ export default function ProductCard( { product } ){
         </p>
         <p class="font-size-sm light">{product.brand}</p>
         {product.isAddedToCart === true ? (
-          <button
-            className="btn btn-col btn-secondary mt-1 border-round"
-            onClick={() => setRoute("cart")}
-          >
-            Go to Cart
-          </button>
+          <>
+            <Link to="/cart">
+              <button className="btn btn-col btn-secondary mt-1 border-round btn-addtocart">
+                Go to Cart
+              </button>
+            </Link>
+          </>
         ) : (
           <button
             className="btn btn-col btn-primary mt-1 border-round"
             onClick={() => {
-              cartDispatch({ type: "ADD_TO_CART", payload: product });
+              clickHandler(product)
               productDispatch({ type: "ITEM_ADDED_TO_CART", payload: product });
-              console.log({ product });
+              setCartToast(true);
             }}
           >
             Add to Cart
           </button>
+        )}
+        {cartToast && (
+          <ToastSuccess timeInterval={2} message={"Item added to cart"} />
+        )}
+        {wishlistToast && (
+          <ToastSuccess timeInterval={2} message={"Item added to Wishlist"} />
         )}
       </div>
     );

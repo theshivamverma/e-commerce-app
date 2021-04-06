@@ -12,6 +12,6 @@ export default function CartList() {
                 return <CartCard cartItem={cartItem} /> 
             })}
         </div> 
-        : <h1 className="center">Your Cart is empty :(</h1>
+        : <h1 className="center mt-4 letter-spaced medium">Your Cart is empty :(</h1>
     )
 }

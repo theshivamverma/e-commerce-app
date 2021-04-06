@@ -4,8 +4,6 @@ import { useProduct } from "../product";
 export default function Sidebar({ state, dispatch }) {
   const { products } = useProduct();
 
-  const [menuState, setMenuState] = useState(false);
-
   const [priceLimit, setPriceLimit] = useState(499)
 
   function getBrands(productList) {
@@ -31,16 +29,10 @@ export default function Sidebar({ state, dispatch }) {
   return (
     <nav
       className={
-        menuState ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
+        state.menuState ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
       }
       id="menu"
     >
-      <button
-        className="btn btn-col btn-secondary btn-float btn-menu"
-        onClick={() => setMenuState(!menuState)}
-      >
-        <i className="fas fa-filter menu icon-med"></i>
-      </button>
       <div className="top-element">
         <a href="/" className="logo">
           <img src="/images/panda.png" alt="" />
@@ -49,7 +41,7 @@ export default function Sidebar({ state, dispatch }) {
         <button
           className="m-0-05 btn btn-icon"
           id="menu-close"
-          onClick={() => setMenuState(!menuState)}
+          onClick={() => dispatch({ type: "TOGGLE_MENUSTATE", payload: false })}
         >
           <i className="fas fa-times icon-med"></i>
         </button>

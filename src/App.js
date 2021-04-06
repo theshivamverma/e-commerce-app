@@ -1,9 +1,10 @@
 import { ProductList, useProduct } from "./components/product";
 import { CartList } from "./components/cart";
-import { Navbar, useNav } from "./components/nav";
+import { Navbar } from "./components/nav";
 import WishlistList from "./components/wishlist/WishlistList";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { useReducer } from "react";
+import { Routes, Route, useLocation } from "react-router-dom"
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -19,6 +20,8 @@ function sortReducer(state, action) {
       return {...state, brands : [...state.brands.filter(brand => brand !== action.payload)]}
     case "SET_PRICE_RANGE":
       return { ...state, priceRange: action.payload }
+    case "TOGGLE_MENUSTATE":
+      return {...state, menuState: action.payload}
     default:
       return;
   }
@@ -26,17 +29,16 @@ function sortReducer(state, action) {
 
 function App() {
   const [
-    { includeOutofStock, showFastDeliveryOnly, sort, brands, priceRange },
+    { includeOutofStock, showFastDeliveryOnly, sort, brands, priceRange, menuState },
     dispatch,
   ] = useReducer(sortReducer, {
     includeOutofStock: false,
     showFastDeliveryOnly: false,
     sort: null,
     brands: [],
-    priceRange: 499
+    priceRange: 499,
+    menuState: false,
   });
-
-  const { route } = useNav();
 
   const { products } = useProduct();
 
@@ -70,21 +72,45 @@ function App() {
     includeOutofStock,
     showFastDeliveryOnly,
     brands,
-    priceRange
+    priceRange,
   });
 
   return (
-    <div className={route === "products" ? "App products" : "App"}>
+    <div
+      className={
+        useLocation().pathname === "/products" ? "App products" : "App"
+      }
+    >
       <Navbar />
-      {route === "products" && (
-        <Sidebar
-          state={{ includeOutofStock, showFastDeliveryOnly, sort, brands }}
-          dispatch={dispatch}
+      <button
+        className="btn btn-col btn-secondary btn-float btn-menu"
+        onClick={() => dispatch({ type: "TOGGLE_MENUSTATE", payload: true })}
+      >
+        <i className="fas fa-filter menu icon-med"></i>
+      </button>
+      <Routes>
+        <Route
+          path="/products"
+          element={
+            <>
+              <Sidebar
+                state={{
+                  includeOutofStock,
+                  showFastDeliveryOnly,
+                  sort,
+                  brands,
+                  menuState,
+                  priceRange
+                }}
+                dispatch={dispatch}
+              />
+              <ProductList products={filteredData} />
+            </>
+          }
         />
-      )}
-      {route === "products" && <ProductList products={filteredData} />}
-      {route === "cart" && <CartList />}
-      {route === "wishlist" && <WishlistList />}
+        <Route path="/cart" element={<CartList />} />
+        <Route path="/wishlist" element={<WishlistList />} />
+      </Routes>
     </div>
   );
 }

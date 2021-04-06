@@ -3,10 +3,15 @@
   padding: 0;
   box-sizing: border-box;
   padding-top: 80px;
+  overflow-y: scroll;
 }
 
 .leftfixed-nav {
-  top: 80px;
+  padding: 1rem 2rem;
+  top: 60px;
+  height: calc(100vh - 60px) !important;
+  overflow-y: scroll !important;
+  z-index: 99 !important;
 }
 
 .btn-menu {
@@ -14,16 +19,13 @@
   position: fixed;
   bottom: 2% !important;
   right: 2% !important;
-  z-index: 9 !important;
+  z-index: 12 !important;
 }
 
 .icon-lg {
   font-size: 1.3rem !important;
 }
 
-.leftfixed-nav {
-  padding: 1rem 2rem;
-}
 .groupinput {
   display: block;
   width: 100%;
@@ -44,6 +46,24 @@
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 3rem;
+}
+
+.alert{
+  display: none;
+}
+
+.alert.active{
+  display: initial !important;
+  display: flex !important;
+  width: 300px;
+  position: fixed !important;
+  bottom: 3%;
+  right: 2%;
+  z-index: 20;
+}
+
+.btn-addtocart{
+  width: 100%; 
 }
 
 @media screen and (min-width: 768px) {

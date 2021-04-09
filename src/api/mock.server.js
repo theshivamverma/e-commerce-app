@@ -2,6 +2,8 @@ import { createServer, RestSerializer, Model } from "miragejs";
 
 import faker from "faker";
 
+import data from "./data"
+
 export default function mockServer() {
   createServer({
     serializers: {
@@ -14,47 +16,11 @@ export default function mockServer() {
     },
 
     seeds(server) {
-      [...Array(50)].map((item) => {
+      data.map((product) => {
         return server.create("product", {
-            id: faker.random.uuid(),
-            name: faker.commerce.productName(),
-            desc: faker.commerce.productDescription(),
-            image: faker.random.image(),
-            price: faker.commerce.price(),
-            actualPrice: faker.random.arrayElement([1999, 2999, 4999]),
-            material: faker.commerce.productMaterial(),
-            brand: faker.random.arrayElement([
-              "Bata",
-              "Reebok",
-              "Nike",
-              "Addidas",
-              "Puma"
-            ]),
+            ...product,
             isWishlist: false,
-            isAddedToCart: false,
-            inStock: faker.random.boolean(),
-            fastDelivery: faker.random.boolean(),
-            ratings: faker.random.arrayElement([1, 2, 3, 4, 5]),
-            offer: faker.random.arrayElement([
-            "Save 50",
-            "70% bonanza",
-            "Republic Day Sale",
-            ]),
-            idealFor: faker.random.arrayElement([
-            "Men",
-            "Women",
-            "Girl",
-            "Boy",
-            "Senior",
-            ]),
-            level: faker.random.arrayElement([
-            "beginner",
-            "amateur",
-            "intermediate",
-            "advanced",
-            "professional",
-            ]),
-            color: faker.commerce.color(),
+            isAddedToCart: false
         })
       });
     },
@@ -68,7 +34,26 @@ export default function mockServer() {
           return schema.carts.all()
         })
 
+        this.post("/api/addToWishList", (schema, request) => {
+          let productItem = JSON.parse(request.requestBody)
+          if(schema.products.find(productItem.id)){
+            let productToUpdate = schema.products.find(productItem.id)
+            return productToUpdate.update({
+              isWishlist: !productToUpdate.isWishlist
+            })
+          }
+        })
+
         this.post("/api/addToCart", (schema, request) => {
+          let cartItem = JSON.parse(request.requestBody);
+          let productItemToUpdate = schema.product.find(cartItem.id);
+          productItemToUpdate.update({
+            isAddedToCart: true
+          })
+          return schema.carts.create(cartItem);
+        });
+
+        this.post("/api/increaseCartQuantity", (schema, request) => {
           let cartItem = JSON.parse(request.requestBody);
 
           if (schema.carts.find(cartItem.id)) {
@@ -76,11 +61,20 @@ export default function mockServer() {
             return cartItemToUpdate.update({
               quantity: cartItemToUpdate.quantity + 1,
             });
-          } else {
-            cartItem.quantity = 1;
-            return schema.carts.create(cartItem);
+          } 
+        });
+
+        this.post("/api/decreaseCartQuantity", (schema, request) => {
+          let cartItem = JSON.parse(request.requestBody);
+
+          if (schema.carts.find(cartItem.id)) {
+            let cartItemToUpdate = schema.carts.find(cartItem.id);
+            return cartItemToUpdate.update({
+              quantity: cartItemToUpdate.quantity - 1,
+            });
           }
-        })
+        });
+        
     }
   });
 }

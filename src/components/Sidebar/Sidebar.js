@@ -4,25 +4,25 @@ import { useProduct } from "../product";
 export default function Sidebar({ state, dispatch }) {
   const { products } = useProduct();
 
-  const [priceLimit, setPriceLimit] = useState(499)
+  const [priceLimit, setPriceLimit] = useState(19999)
 
-  function getBrands(productList) {
-    let brandArr = [];
+  function getCategories(productList) {
+    let categoryArr = [];
     productList.forEach((product) => {
-      if (!brandArr.includes(product.brand)) {
-        brandArr.push(product.brand);
+      if (!categoryArr.includes(product.category)) {
+        categoryArr.push(product.category);
       }
     });
-    return brandArr;
+    return categoryArr;
   }
 
-  const brands = getBrands(products);
+  const categories = getCategories(products);
 
-  function setBrand(e, brandName){
+  function setCategory(e, categoryName){
     if(e.target.checked){
-      dispatch({ type: "ADD_BRAND_TO_FILTER", payload: brandName });
+      dispatch({ type: "ADD_CATEGORY_TO_FILTER", payload: categoryName });
     } else{
-      dispatch({ type: "REMOVE_BRAND_FROM_FILTER", payload: brandName });
+      dispatch({ type: "REMOVE_CATEGORY_FROM_FILTER", payload: categoryName });
     }
   }
 
@@ -85,15 +85,15 @@ export default function Sidebar({ state, dispatch }) {
         </span>
       </fieldset>
       <fieldset className="mt-1">
-        <legend>Brands</legend>
-        {brands.map((brand, index) => {
+        <legend>categories</legend>
+        {categories.map((category, index) => {
           return (
             <span className="groupinput" key={index}>
-              <label>{brand}</label>
+              <label>{category}</label>
               <input
                 type="checkbox"
-                name="brand"
-                onChange={(e) => setBrand(e, brand)}
+                name="category"
+                onChange={(e) => setCategory(e, category)}
               />
             </span>
           );
@@ -106,7 +106,7 @@ export default function Sidebar({ state, dispatch }) {
             className="price-slider"
             type="range"
             min="0"
-            max="999"
+            max="19999"
             value={priceLimit}
             step="50"
             onChange={(e) => {

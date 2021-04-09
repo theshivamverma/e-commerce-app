@@ -3,7 +3,7 @@ import {useProduct} from "../product"
 import ToastSuccess from "../Toast/ToastSucess";
 import { Link } from "react-router-dom"
 import { useState } from "react";
-import axios from "axios"
+import axios from "axios";
 
 export default function ProductCard( { product } ){
     const { productDispatch } = useProduct();
@@ -32,7 +32,7 @@ export default function ProductCard( { product } ){
     return (
       <div className="card-product p-1 card-shadow">
         <div className="product-img">
-          <img src={product.image} alt="" />
+          <img src={product.images[0]} alt="" />
           <button
             class="btn btn-icon wishlist"
             onClick={() => {
@@ -49,11 +49,11 @@ export default function ProductCard( { product } ){
             ></i>
           </button>
         </div>
-        <h1 className="product-heading mt-1">{product.name}</h1>
-        <p className="product-desc mt-05">{product.desc.substring(0, 20)}</p>
+        <h1 className="product-heading mt-1">{product.description}</h1>
+        {/* <p className="product-desc mt-05">{product.subDescription.substring(0, 20)}</p> */}
         <h2 className="price mt-05">{`Rs. ${product.price}`}</h2>
         <div className="og-price">
-          <span className="price-cut">{`Rs. ${product.actualPrice}`}</span>
+          <span className="price-cut">{`Rs. ${product.mrp}`}</span>
           <span className="discount">(55% Off)</span>
         </div>
         <p class="font-size-sm light">

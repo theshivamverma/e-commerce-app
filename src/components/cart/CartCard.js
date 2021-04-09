@@ -6,7 +6,7 @@ export default function CartCard({ cartItem }) {
   const { productDispatch } = useProduct();
 
   return (
-    <div className="card-cart p-1 bd1 bdGray">
+    <div className="card-cart p-1 mt-1 bdGray box-shadow-down">
       <div className="cart-details">
         <div className="cart-product-img">
           <img src={cartItem.image} alt="" />

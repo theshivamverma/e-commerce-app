@@ -5,6 +5,7 @@ import WishlistList from "./components/wishlist/WishlistList";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { useReducer } from "react";
 import { Routes, Route, useLocation } from "react-router-dom"
+import Home from "./components/home/Home";
 
 function sortReducer(state, action) {
   switch (action.type) {
@@ -14,10 +15,10 @@ function sortReducer(state, action) {
       return { ...state, showFastDeliveryOnly: !state.showFastDeliveryOnly };
     case "SORT":
       return { ...state, sort: action.payload };
-    case "ADD_BRAND_TO_FILTER":
-      return { ...state, brands: [...state.brands, action.payload] };
-    case "REMOVE_BRAND_FROM_FILTER":
-      return {...state, brands : [...state.brands.filter(brand => brand !== action.payload)]}
+    case "ADD_CATEGORY_TO_FILTER":
+      return { ...state, categories: [...state.categories, action.payload] };
+    case "REMOVE_CATEGORY_FROM_FILTER":
+      return {...state, categories : [...state.categories.filter(category => category !== action.payload)]}
     case "SET_PRICE_RANGE":
       return { ...state, priceRange: action.payload }
     case "TOGGLE_MENUSTATE":
@@ -29,14 +30,14 @@ function sortReducer(state, action) {
 
 function App() {
   const [
-    { includeOutofStock, showFastDeliveryOnly, sort, brands, priceRange, menuState },
+    { includeOutofStock, showFastDeliveryOnly, sort, categories, priceRange, menuState },
     dispatch,
   ] = useReducer(sortReducer, {
     includeOutofStock: false,
     showFastDeliveryOnly: false,
     sort: null,
-    brands: [],
-    priceRange: 499,
+    categories: [],
+    priceRange: 19999,
     menuState: false,
   });
 
@@ -54,15 +55,15 @@ function App() {
 
   function getFilteredData(
     productList,
-    { includeOutofStock, showFastDeliveryOnly, brands, priceRange }
+    { includeOutofStock, showFastDeliveryOnly, categories, priceRange }
   ) {
     return productList
       .filter(({ inStock }) => (includeOutofStock ? true : inStock))
       .filter(({ fastDelivery }) =>
         showFastDeliveryOnly ? fastDelivery : true
       )
-      .filter(({ brand }) =>
-        brands.length > 0 ? (brands.includes(brand) ? brand : false) : brand
+      .filter(({ category }) =>
+        categories.length > 0 ? (categories.includes(category) ? category : false) : category
       )
       .filter(({ price }) => price <= priceRange ? price : false)
   }
@@ -71,14 +72,18 @@ function App() {
   const filteredData = getFilteredData(sortedData, {
     includeOutofStock,
     showFastDeliveryOnly,
-    brands,
+    categories,
     priceRange,
   });
+
+  const pathname = useLocation().pathname;
 
   return (
     <div
       className={
-        useLocation().pathname === "/products" ? "App products" : "App"
+        pathname === "/products"
+          ? "App products"
+          : pathname === "/" ? "App home" : "App"
       }
     >
       <Navbar />
@@ -89,6 +94,7 @@ function App() {
         <i className="fas fa-filter menu icon-med"></i>
       </button>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route
           path="/products"
           element={
@@ -98,9 +104,9 @@ function App() {
                   includeOutofStock,
                   showFastDeliveryOnly,
                   sort,
-                  brands,
+                  categories,
                   menuState,
-                  priceRange
+                  priceRange,
                 }}
                 dispatch={dispatch}
               />

@@ -5,6 +5,7 @@ import App from "./App";
 import mockServer from "./api/mock.server";
 import { ProductProvider } from "./components/product";
 import { CartProvider } from "./components/cart";
+import { FilterProvider } from "./components/filters"
 import { BrowserRouter as Router } from "react-router-dom";
 
 mockServer();
@@ -13,9 +14,11 @@ ReactDOM.render(
   <React.StrictMode>
     <ProductProvider>
       <CartProvider>
-        <Router>
-          <App />
-        </Router>
+        <FilterProvider>
+          <Router>
+            <App />
+          </Router>
+        </FilterProvider>
       </CartProvider>
     </ProductProvider>
   </React.StrictMode>,

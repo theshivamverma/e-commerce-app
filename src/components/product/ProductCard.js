@@ -1,6 +1,6 @@
 import { useCart } from "../cart";
 import {useProduct} from "../product"
-import ToastSuccess from "../Toast/ToastSucess";
+import ToastSuccess from "../utilities/Toast/ToastSucess";
 import { Link } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";

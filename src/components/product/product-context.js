@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react"
 import axios from "axios"
-import {productReducer}  from "../product"
+import { productReducer }  from "../product"
 
 const ProductContext = createContext();
 
@@ -25,7 +25,7 @@ export function ProductProvider( { children } ){
     }, [])
 
     return(
-        <ProductContext.Provider value={ {products : state.products, productDispatch: dispatch} }>
+        <ProductContext.Provider value={ { products : state.products, productDispatch: dispatch } }>
             {children}
         </ProductContext.Provider>
     )

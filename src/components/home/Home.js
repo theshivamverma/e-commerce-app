@@ -1,4 +1,4 @@
-import Carousel from "../Carousel/Carousel";
+import Carousel from "../utilities/Carousel/Carousel";
 import { Link } from "react-router-dom"
 
 export default function Home(){

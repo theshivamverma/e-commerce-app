@@ -46,10 +46,7 @@ export default function mockServer() {
 
         this.post("/api/addToCart", (schema, request) => {
           let cartItem = JSON.parse(request.requestBody);
-          let productItemToUpdate = schema.product.find(cartItem.id);
-          productItemToUpdate.update({
-            isAddedToCart: true
-          })
+          cartItem.quantity = 1
           return schema.carts.create(cartItem);
         });
 

@@ -1,10 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProduct } from "../product";
+import { useFilter } from "../filters"
 
-export default function Sidebar({ state, dispatch }) {
+export default function Sidebar() {
   const { products } = useProduct();
 
-  const [priceLimit, setPriceLimit] = useState(19999)
+  const {
+    filterState: {
+      includeOutofStock,
+      showFastDeliveryOnly,
+      sort,
+      categories,
+      priceRange,
+      menuState
+    },
+    filterDispatch,
+  } = useFilter(); 
+
+  const maxPrice = products.reduce((max, product) => product.price > max ? product.price : max, 0)
+
+  const [priceLimit, setPriceLimit] = useState(0)
+
+  useEffect(() => {
+    setPriceLimit(maxPrice)
+  }, [maxPrice])
+
+  console.log(maxPrice, priceLimit)
 
   function getCategories(productList) {
     let categoryArr = [];
@@ -16,20 +37,20 @@ export default function Sidebar({ state, dispatch }) {
     return categoryArr;
   }
 
-  const categories = getCategories(products);
+  const productCategories = getCategories(products);
 
   function setCategory(e, categoryName){
     if(e.target.checked){
-      dispatch({ type: "ADD_CATEGORY_TO_FILTER", payload: categoryName });
+      filterDispatch({ type: "ADD_CATEGORY_TO_FILTER", payload: categoryName });
     } else{
-      dispatch({ type: "REMOVE_CATEGORY_FROM_FILTER", payload: categoryName });
+      filterDispatch({ type: "REMOVE_CATEGORY_FROM_FILTER", payload: categoryName });
     }
   }
 
   return (
     <nav
       className={
-        state.menuState ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
+        menuState ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
       }
       id="menu"
     >
@@ -41,7 +62,9 @@ export default function Sidebar({ state, dispatch }) {
         <button
           className="m-0-05 btn btn-icon"
           id="menu-close"
-          onClick={() => dispatch({ type: "TOGGLE_MENUSTATE", payload: false })}
+          onClick={() =>
+            filterDispatch({ type: "TOGGLE_MENUSTATE", payload: false })
+          }
         >
           <i className="fas fa-times icon-med"></i>
         </button>
@@ -53,7 +76,10 @@ export default function Sidebar({ state, dispatch }) {
           <input
             type="radio"
             name="sort"
-            onChange={() => dispatch({ type: "SORT", payload: "LOW_TO_HIGH" })}
+            checked={sort === "LOW_TO_HIGH"}
+            onChange={() =>
+              filterDispatch({ type: "SORT", payload: "LOW_TO_HIGH" })
+            }
           />
         </span>
         <span className="groupinput">
@@ -61,7 +87,10 @@ export default function Sidebar({ state, dispatch }) {
           <input
             type="radio"
             name="sort"
-            onChange={() => dispatch({ type: "SORT", payload: "HIGH_TO_LOW" })}
+            checked={sort === "HIGH_TO_LOW"}
+            onChange={() =>
+              filterDispatch({ type: "SORT", payload: "HIGH_TO_LOW" })
+            }
           />
         </span>
       </fieldset>
@@ -72,7 +101,8 @@ export default function Sidebar({ state, dispatch }) {
           <input
             type="checkbox"
             name="filter"
-            onChange={() => dispatch({ type: "INCLUDE_OUT_OF_STOCK" })}
+            checked={includeOutofStock}
+            onChange={() => filterDispatch({ type: "INCLUDE_OUT_OF_STOCK" })}
           />
         </span>
         <span className="groupinput">
@@ -80,19 +110,21 @@ export default function Sidebar({ state, dispatch }) {
           <input
             type="checkbox"
             name="filter"
-            onChange={() => dispatch({ type: "SHOW_FAST_DELIVERY_ONLY" })}
+            checked={showFastDeliveryOnly}
+            onChange={() => filterDispatch({ type: "SHOW_FAST_DELIVERY_ONLY" })}
           />
         </span>
       </fieldset>
       <fieldset className="mt-1">
         <legend>categories</legend>
-        {categories.map((category, index) => {
+        {productCategories.map((category, index) => {
           return (
             <span className="groupinput" key={index}>
               <label>{category}</label>
               <input
                 type="checkbox"
                 name="category"
+                checked={categories.includes(category)}
                 onChange={(e) => setCategory(e, category)}
               />
             </span>
@@ -108,10 +140,13 @@ export default function Sidebar({ state, dispatch }) {
             min="0"
             max="19999"
             value={priceLimit}
-            step="50"
+            step="499"
             onChange={(e) => {
-              setPriceLimit(e.target.value)
-              dispatch({ type: "SET_PRICE_RANGE", payload: e.target.value })
+              setPriceLimit(e.target.value);
+              filterDispatch({
+                type: "SET_PRICE_RANGE",
+                payload: e.target.value,
+              });
             }}
           />
         </span>

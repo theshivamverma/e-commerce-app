@@ -9,11 +9,11 @@ export default function CartCard({ cartItem }) {
     <div className="card-cart p-1 mt-1 bdGray box-shadow-down">
       <div className="cart-details">
         <div className="cart-product-img">
-          <img src={cartItem.image} alt="" />
+          <img src={cartItem.images[0]} alt="" />
         </div>
         <div className="cart-product-desc">
-          <h1 className="product-heading">{cartItem.name}</h1>
-          <p className="product-desc mt-05">{cartItem.desc.substring(0, 20)}</p>
+          <h1 className="product-heading">{cartItem.description}</h1>
+          {/* <p className="product-desc mt-05">{cartItem.desc.substring(0, 20)}</p> */}
           <div className="change-quantity mt-05">
             <button
               className="btn btn-icon btn-cart"
@@ -57,7 +57,7 @@ export default function CartCard({ cartItem }) {
       </div>
       <div className="cart-product-price">
         <h2 className="price">{`Rs. ${cartItem.price}`}</h2>
-        <span className="price-cut">{`Rs. ${cartItem.actualPrice}`}</span>
+        <span className="price-cut">{`Rs. ${cartItem.mrp}`}</span>
         <span className="discount">(55% Off)</span>
       </div>
     </div>

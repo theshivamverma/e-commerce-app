@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProduct } from "../product";
 import { useFilter } from "../filters"
+import { useActionControl } from "../action-control"
 
 export default function Sidebar() {
   const { products } = useProduct();
@@ -12,10 +13,11 @@ export default function Sidebar() {
       sort,
       categories,
       priceRange,
-      menuState
     },
     filterDispatch,
   } = useFilter(); 
+
+  const { actionState : { menuState }, actionDispatch } = useActionControl();
 
   const maxPrice = products.reduce((max, product) => product.price > max ? product.price : max, 0)
 
@@ -24,8 +26,6 @@ export default function Sidebar() {
   useEffect(() => {
     setPriceLimit(maxPrice)
   }, [maxPrice])
-
-  console.log(maxPrice, priceLimit)
 
   function getCategories(productList) {
     let categoryArr = [];
@@ -63,7 +63,7 @@ export default function Sidebar() {
           className="m-0-05 btn btn-icon"
           id="menu-close"
           onClick={() =>
-            filterDispatch({ type: "TOGGLE_MENUSTATE", payload: false })
+            actionDispatch({ type: "TOGGLE_MENU", payload: false })
           }
         >
           <i className="fas fa-times icon-med"></i>

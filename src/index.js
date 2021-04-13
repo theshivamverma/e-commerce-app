@@ -6,6 +6,7 @@ import mockServer from "./api/mock.server";
 import { ProductProvider } from "./components/product";
 import { CartProvider } from "./components/cart";
 import { FilterProvider } from "./components/filters"
+import { ActionControlProvider } from "./components/action-control"
 import { BrowserRouter as Router } from "react-router-dom";
 
 mockServer();
@@ -15,9 +16,11 @@ ReactDOM.render(
     <ProductProvider>
       <CartProvider>
         <FilterProvider>
-          <Router>
-            <App />
-          </Router>
+          <ActionControlProvider>
+            <Router>
+              <App />
+            </Router>
+          </ActionControlProvider>
         </FilterProvider>
       </CartProvider>
     </ProductProvider>

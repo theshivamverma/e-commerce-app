@@ -9,7 +9,6 @@ const initialState = {
   sort: null,
   categories: [],
   priceRange: 19999,
-  menuState: false,
 };
 
 export function FilterProvider({ children }){

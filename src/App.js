@@ -6,12 +6,18 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { Routes, Route, useLocation } from "react-router-dom"
 import Home from "./components/home/Home";
 import { useFilter, getSortedData, getFilteredData } from "./components/filters"
+import { useActionControl } from "./components/action-control"
+import ToastSuccess from "./components/utilities/Toast/ToastSucess"
 
 function App() {
 
   const { products } = useProduct();
 
   const { filterState: { includeOutofStock, showFastDeliveryOnly, sort, categories, priceRange } } = useFilter()
+
+  const { actionState: { menuState, showSuccessToast }, actionDispatch } = useActionControl()
+
+  console.log(showSuccessToast)
 
   const sortedData = getSortedData(products, sort);
   const filteredData = getFilteredData(sortedData, {
@@ -21,6 +27,8 @@ function App() {
     priceRange,
   });
 
+  console.log({filteredData})
+
   const pathname = useLocation().pathname;
 
   return (
@@ -28,16 +36,19 @@ function App() {
       className={
         pathname === "/products"
           ? "App products"
-          : pathname === "/" ? "App home" : "App"
+          : pathname === "/"
+          ? "App home"
+          : "App"
       }
     >
       <Navbar />
       <button
         className="btn btn-col btn-secondary btn-float btn-menu"
-        // onClick={() => dispatch({ type: "TOGGLE_MENUSTATE", payload: true })}
+        onClick={() => actionDispatch({ type: "TOGGLE_MENU", payload: true })}
       >
         <i className="fas fa-filter menu icon-med"></i>
       </button>
+      {showSuccessToast && <ToastSuccess /> }
       <Routes>
         <Route path="/" element={<Home />} />
         <Route

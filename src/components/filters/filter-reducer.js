@@ -12,13 +12,11 @@ export default function filterReducer(state, action) {
       return {
         ...state,
         categories: [
-          ...state.categories.filter((category) => category !== action.payload),
+          state.categories.filter((category) => category !== action.payload),
         ],
       };
     case "SET_PRICE_RANGE":
       return { ...state, priceRange: action.payload };
-    case "TOGGLE_MENUSTATE":
-      return { ...state, menuState: action.payload };
     default:
       return;
   }

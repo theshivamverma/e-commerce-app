@@ -1,9 +1,11 @@
 import { useCart } from "../cart";
 import { useProduct } from "../product";
+import { useActionControl } from "../action-control"
 
 export default function CartCard({ cartItem }) {
   const { cartDispatch } = useCart();
   const { productDispatch } = useProduct();
+  const { actionDispatch } = useActionControl();
 
   return (
     <div className="card-cart p-1 mt-1 bdGray box-shadow-down">
@@ -39,6 +41,14 @@ export default function CartCard({ cartItem }) {
             onClick={() => {
               cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem })
               productDispatch({ type: "ITEM_REMOVED_FROM_CART", payload: cartItem });
+              actionDispatch({
+                type: "SHOW_SUCCESS_TOAST",
+                payload: {
+                  time: 1,
+                  message: "Item removed from cart",
+                  status: true,
+                },
+              });
             }}
           >
             Remove
@@ -49,6 +59,14 @@ export default function CartCard({ cartItem }) {
               productDispatch({ type: "MOVE_TO_WISHLIST", payload: cartItem });
               cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem });
               productDispatch({ type: "ITEM_REMOVED_FROM_CART", payload: cartItem });
+              actionDispatch({
+                type: "SHOW_SUCCESS_TOAST",
+                payload: {
+                  time: 1,
+                  message: "Item moved to wishlist",
+                  status: true,
+                },
+              });
             }}
           >
             Move to Wishlist

@@ -1,9 +1,27 @@
 import { useState } from "react";
+import { useActionControl } from "../../action-control";
 
-export default function ToastSuccess({ timeInterval, message }) {
-  const [time, setTime] = useState(timeInterval);
+export default function ToastSuccess() {
+  const {
+    actionState: { toastMessage, toastInterval }, actionDispatch
+  } = useActionControl();
 
-  setTimeout(() => setTime(time - 1000), timeInterval * 1000);
+  const [time, setTime] = useState(toastInterval * 1000);
+
+  if(time === 0){
+    actionDispatch({
+      type: "SHOW_SUCCESS_TOAST",
+      payload: { time: 0, message: "", status: false },
+    });
+  }
+
+  setTimeout(() => {
+    if(time > 0){
+      setTime(time - 1000);
+    } 
+  }, toastInterval * 1000);
+
+  console.log({ toastInterval, toastMessage })
 
   return (
     <div
@@ -15,7 +33,7 @@ export default function ToastSuccess({ timeInterval, message }) {
     >
       <div class="alert-content flex align-center">
         <i class="fas fa-check-circle mr-1 icon-med alertgreen"></i>
-        <p>{message}</p>
+        <p>{toastMessage}</p>
       </div>
       <i
         class="fas fa-times-circle icon-med alertgreen alert-close"

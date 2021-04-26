@@ -1,21 +1,20 @@
-import { createContext, useContext, useEffect, useReducer } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import axios from "axios"
-import { productReducer }  from "../product"
+import env from "react-dotenv"
 
 const ProductContext = createContext();
 
 export function ProductProvider( { children } ){
 
-    const [state, dispatch] = useReducer(productReducer, { products: [] });
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         (
             async function(){
                 try{
-                    const { data, status } = await axios.get("/api/products")
+                    const { status, data } = await axios.get(`${env.BASE_URL}/product`)
                     if(status === 200){
-                        console.log("Data found", data.products)
-                        dispatch({type: "LOAD_DATA", payload: data.products})
+                        setProducts(data.products)
                     }
                 }catch(error){
                     console.log(error)
@@ -25,7 +24,7 @@ export function ProductProvider( { children } ){
     }, [])
 
     return(
-        <ProductContext.Provider value={ { products : state.products, productDispatch: dispatch } }>
+        <ProductContext.Provider value={ { products } }>
             {children}
         </ProductContext.Provider>
     )

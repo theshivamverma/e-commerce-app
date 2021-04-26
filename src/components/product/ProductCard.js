@@ -1,30 +1,90 @@
 import { useCart } from "../cart";
-import { useProduct } from "../product";
 import { useActionControl } from "../action-control";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useWishlist } from "../wishlist"
+import { useEffect, useState } from "react";
 
 export default function ProductCard({ product }) {
-  const { productDispatch } = useProduct();
-  const { cartDispatch } = useCart();
+  const { cartItems, cartDispatch, addToCart } = useCart();
   const { actionDispatch } = useActionControl();
+  const { wishlist, wishlistDispatch, addToWishlist, removeFromWishlist } = useWishlist();
+  const [isIncludedInWishlist, setIsIncludedInWishlist] = useState(false)
+  const [inWishlistButInvisible, setInWishListButInvisible] = useState(false)
+  const [currentWishlistItemId, setCurrentWishlistItemId] = useState("")
+  const [isInCart, setIsInCart] = useState(false)
+  const [isInCartButInvisible, setIsInCartButInvisible] = useState(false)
+  const [currentCartItemId, setCurrentCartItemId] = useState("")
 
-  async function addToCartApi(data) {
-    try {
-      const { status } = await axios.post("/api/addToCart", {
-        ...data,
-      });
-      if (status === 201) {
-        cartDispatch({ type: "ADD_TO_CART", payload: data });
+  function checkForWishlist(){
+    wishlist.map((wishlistItem) => {
+      if (wishlistItem.product._id == product._id) {
+        if (wishlistItem.visible === true){
+          setIsIncludedInWishlist(true);
+        }else{
+          setInWishListButInvisible(true);
+        }
+        if(wishlistItem._id){
+          setCurrentWishlistItemId(wishlistItem._id);
+        }
       }
-    } catch (error) {
-      console.log(error);
-      return;
-    }
+    });
   }
 
-  function clickHandler(data) {
-    addToCartApi(data);
+  function checkForCart(){
+    cartItems.map(cartItem => {
+      if(cartItem.product._id == product._id){
+        if(cartItem.visible == true){
+          setIsInCart(true)
+        }else{
+          setIsInCartButInvisible(true)
+        }
+        if(cartItem._id){
+          setCurrentCartItemId(cartItem._id)
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    checkForWishlist()
+    checkForCart()
+  }, [wishlist, cartItems])
+
+  function wishlistClickHandler(product){
+    if(isIncludedInWishlist){
+      setIsIncludedInWishlist(false)
+      wishlistDispatch({ type: "REMOVE_FROM_WISHLIST", payload: currentWishlistItemId})
+      removeFromWishlist(product._id)
+    } else{
+      if(inWishlistButInvisible){
+        wishlistDispatch({ type: "ADD_EXISTING_TO_WISHLIST", payload: currentWishlistItemId})
+        addToWishlist(product._id)
+      }else{
+        wishlistDispatch({ type: "ADD_NEWITEM_TO_WISHLIST", payload: product });
+        addToWishlist(product._id)
+      }
+    }
+    actionDispatch({
+      type: "SHOW_SUCCESS_TOAST",
+      payload: {
+        time: 1,
+        message: isIncludedInWishlist
+          ? "Item removed from wishlist"
+          : "Item added to wishlist",
+        status: true,
+      },
+    });
+  }
+
+  function cartClickHandler(product) {
+    if(isInCartButInvisible){
+      cartDispatch({ type: "ADD_EXISTING_TO_CART", payload: currentCartItemId });
+      addToCart(product._id)
+    }else{
+      cartDispatch({ type: "ADD_TO_CART", payload: product });
+      addToCart(product._id)
+    }
     actionDispatch({
       type: "SHOW_SUCCESS_TOAST",
       payload: { time: 1, message: "Item added to cart", status: true },
@@ -37,30 +97,20 @@ export default function ProductCard({ product }) {
         <img src={product.images[0]} alt="" />
         <button
           class="btn btn-icon wishlist"
-          onClick={() => {
-            productDispatch({ type: "ADD_TO_WISHLIST", payload: product });
-            actionDispatch({
-              type: "SHOW_SUCCESS_TOAST",
-              payload: {
-                time: 1,
-                message: product.isWishlist
-                  ? "Item removed from wishlist"
-                  : "Item added to wishlist",
-                status: true,
-              },
-            });
-          }}
+          onClick={() => wishlistClickHandler(product)}
         >
           <i
             className={
-              product.isWishlist
+              isIncludedInWishlist
                 ? `fas fa-heart icon-sm wishlist-icon active`
                 : `fas fa-heart icon-sm wishlist-icon`
             }
           ></i>
         </button>
       </div>
-      <h1 className="product-heading mt-1">{product.description}</h1>
+      <Link to={`/products/${product.id}`}>
+        <h1 className="product-heading mt-1">{product.name}</h1>
+      </Link>
       {/* <p className="product-desc mt-05">{product.subDescription.substring(0, 20)}</p> */}
       <h2 className="price mt-05">{`Rs. ${product.price}`}</h2>
       <div className="og-price">
@@ -74,7 +124,7 @@ export default function ProductCard({ product }) {
         {product.fastDelivery ? "Super Fast Delivery" : "Regular Shipping"}
       </p>
       <p class="font-size-sm light">{product.brand}</p>
-      {product.isAddedToCart === true ? (
+      {isInCart === true ? (
         <>
           <Link to="/cart">
             <button className="btn btn-col btn-secondary mt-1 border-round btn-addtocart">
@@ -85,10 +135,7 @@ export default function ProductCard({ product }) {
       ) : (
         <button
           className="btn btn-col btn-primary mt-1 border-round"
-          onClick={() => {
-            clickHandler(product);
-            productDispatch({ type: "ITEM_ADDED_TO_CART", payload: product });
-          }}
+          onClick={() => cartClickHandler(product)}
         >
           Add to Cart
         </button>

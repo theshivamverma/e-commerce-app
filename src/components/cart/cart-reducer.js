@@ -8,32 +8,47 @@ export default function cartReducer(state, action) {
       return {
         ...state,
         cart: state.cart.concat({
-          ...action.payload,
+          product: action.payload,
           quantity: 1,
+          visible: true
         }),
       };
+    case "ADD_EXISTING_TO_CART":
+      return {
+        ...state,
+        cart: state.cart.map(cartItem => {
+          if(cartItem._id === action.payload){
+            return {...cartItem, visible: !cartItem.visible, quantity: 1}
+          }
+          return cartItem
+        })
+      }
     case "INCREASE_QUANTITY":
       return {
         ...state,
-        cart: state.cart.map((cart) => {
-          if (cart.id === action.payload.id) {
-            return { ...cart, quantity: cart.quantity + 1 };
-          } else return cart;
+        cart: state.cart.map((cartItem) => {
+          if (cartItem._id === action.payload) {
+            return { ...cartItem, quantity: cartItem.quantity + 1 };
+          } else return cartItem;
         }),
       };
     case "DECREASE_QUANTITY":
       return {
         ...state,
-        cart: state.cart.map((cart) => {
-          if (cart.id === action.payload.id) {
-            return { ...cart, quantity: cart.quantity - 1 };
-          } else return cart;
+        cart: state.cart.map((cartItem) => {
+          if (cartItem._id === action.payload) {
+            return { ...cartItem, quantity: cartItem.quantity - 1 };
+          } else return cartItem;
         }),
       };
     case "REMOVE_CART_ITEM":
       return {
         ...state,
-        cart: state.cart.filter((cart) => cart.id !== action.payload.id),
+        cart: state.cart.map((cartItem) => {
+          if (cartItem._id === action.payload) {
+            return { ...cartItem, visible: false };
+          } else return cartItem;
+        }),
       };
     case "MOVE_TO_WISHLIST":
       return {

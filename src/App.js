@@ -8,6 +8,9 @@ import Home from "./components/home/Home";
 import { useFilter, getSortedData, getFilteredData } from "./components/filters"
 import { useActionControl } from "./components/action-control"
 import ToastSuccess from "./components/utilities/Toast/ToastSucess"
+import ProductDetail from "./components/product/ProductDetail";
+import { Login, Register } from "./components/login"
+import { PrivateRoute } from "./components/auth"
 
 function App() {
 
@@ -60,8 +63,11 @@ function App() {
             </>
           }
         />
-        <Route path="/cart" element={<CartList />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
+        <PrivateRoute path="/cart" element={<CartList />} />
         <Route path="/wishlist" element={<WishlistList />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

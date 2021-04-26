@@ -1,5 +1,4 @@
 export default function actionControlReducer(state, action) {
-  console.log({action})
   switch (action.type) {
     case "TOGGLE_MENU":
       return { ...state, menuState: action.payload };

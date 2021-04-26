@@ -1,7 +1,7 @@
 import { ProductCard } from "../product";
+import { useWishlist } from "../wishlist"
 
 export default function ProductList({ products }) {
-
   return (
     <div className="grid-container web-four mob-two p2 mt2">
       {products.map((product) => (

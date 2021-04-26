@@ -5,6 +5,8 @@ export default function CartList() {
 
     const { cartItems } = useCart()
 
+    console.log(cartItems)
+
     return(
         cartItems.length > 0 ? 
         <div class="stacked-list mt1">

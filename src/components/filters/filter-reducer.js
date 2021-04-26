@@ -11,9 +11,7 @@ export default function filterReducer(state, action) {
     case "REMOVE_CATEGORY_FROM_FILTER":
       return {
         ...state,
-        categories: [
-          state.categories.filter((category) => category !== action.payload),
-        ],
+        categories: state.categories.filter((category) => category !== action.payload),
       };
     case "SET_PRICE_RANGE":
       return { ...state, priceRange: action.payload };

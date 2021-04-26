@@ -1,14 +1,14 @@
-import { useProduct } from "../product";
 import { ProductCard } from "../product";
+import { useWishlist } from "../wishlist"
 
 export default function WishlistList() {
-  const { products } = useProduct();
-  return products.filter((product) => product.isWishlist).length > 0 ? (
+  const { wishlist } = useWishlist()
+  return wishlist.filter((wishlistItem) => wishlistItem.visible).length > 0 ? (
     <div className="grid-container web-four mob-two p2 mt2">
-      {products
-        .filter((product) => product.isWishlist)
-        .map((product) => (
-          <ProductCard key={product.id} product={product} />
+      {wishlist
+        .filter((wishlistItem) => wishlistItem.visible)
+        .map((wishlistItem) => (
+          <ProductCard key={wishlistItem._id} product={wishlistItem.product} />
         ))}
     </div>
   ) : (

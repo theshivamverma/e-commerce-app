@@ -1,11 +1,10 @@
 import { useCart } from "../cart";
-import { useProduct } from "../product";
 import { Link } from "react-router-dom"
+import { useWishlist } from "../wishlist"
 
 export default function Navbar() {
   const { cartItems } = useCart();
-  const { products } = useProduct();
-  const wishListArr = products.filter((product) => product.isWishlist)
+  const { wishlist } = useWishlist();
   return (
     <nav className="nav p-1 top-fixed box-shadow-down">
       <Link to="/">
@@ -21,9 +20,9 @@ export default function Navbar() {
         <Link to="/cart">
           <button className="btn btn-icon icon-text-down ml1">
             <i className="fas fa-shopping-cart icon-lg icon-badge">
-              {cartItems.length > 0 && (
-                <span className="badge circle bdg-tr bdg-num bdg-blue">
-                  {cartItems.length}
+              {cartItems.filter((cartItem) => cartItem.visible).length > 0 && (
+                <span className="badge bd3 circle bdg-tr bdg-num bdg-blue">
+                  {cartItems.filter((cartItem) => cartItem.visible).length}
                 </span>
               )}
             </i>
@@ -33,9 +32,9 @@ export default function Navbar() {
         <Link to="/wishlist">
           <button className="btn btn-icon icon-text-down ml1">
             <i className="fas fa-heart icon-lg icon-badge colorRed">
-              {wishListArr.length > 0 && (
-                <span className="badge circle bdg-tr bdg-num bdg-blue">
-                  {wishListArr.length}
+              {wishlist.filter(wishlistItem => wishlistItem.visible).length > 0 && (
+                <span className="badge bd3 circle bdg-tr bdg-num bdg-blue">
+                  {wishlist.filter(wishlistItem => wishlistItem.visible).length}
                 </span>
               )}
             </i>

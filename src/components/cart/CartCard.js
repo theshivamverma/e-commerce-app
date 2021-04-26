@@ -1,27 +1,56 @@
 import { useCart } from "../cart";
-import { useProduct } from "../product";
 import { useActionControl } from "../action-control"
+import { useWishlist } from "../wishlist"
+import { useState } from "react";
 
 export default function CartCard({ cartItem }) {
-  const { cartDispatch } = useCart();
-  const { productDispatch } = useProduct();
+  const { cartDispatch, increaseQuantity, decreaseQuantity, removeCartItem } = useCart();
   const { actionDispatch } = useActionControl();
+  const { wishlist, addToWishlist, wishlistDispatch } = useWishlist();
+
+  const [isInWishlist, setIsInWishlist] = useState(false)
+  const [currentWishlistItemId, setCurrentWishlistItemId] = useState("")
+
+  function checkForWishlist(){
+    wishlist.map(wishlistItem => {
+      if(wishlistItem.product._id === cartItem.product._id){
+        setIsInWishlist(true)
+      }
+      setCurrentWishlistItemId(wishlistItem._id)
+    })
+  }
+
+  useState(() => {
+    checkForWishlist()
+  }, [wishlist])
+
+  function wishlistClickHandler(cartItem){
+    if(isInWishlist){
+      wishlistDispatch({ type: "ADD_EXISTING_TO_WISHLIST", payload: currentWishlistItemId });
+      addToWishlist(cartItem.product._id)
+    }else{
+      wishlistDispatch({ type: "ADD_NEWITEM_TO_WISHLIST", payload: cartItem.product })
+      addToWishlist(cartItem.product._id)
+    }
+  }
 
   return (
-    <div className="card-cart p-1 mt-1 bdGray box-shadow-down">
+    cartItem.visible && <div className="card-cart p-1 mt-1 bdGray box-shadow-down">
       <div className="cart-details">
         <div className="cart-product-img">
-          <img src={cartItem.images[0]} alt="" />
+          <img src={cartItem.product.images[0]} alt="" />
         </div>
         <div className="cart-product-desc">
-          <h1 className="product-heading">{cartItem.description}</h1>
+          <h1 className="product-heading">{cartItem.product.name}</h1>
           {/* <p className="product-desc mt-05">{cartItem.desc.substring(0, 20)}</p> */}
           <div className="change-quantity mt-05">
             <button
               className="btn btn-icon btn-cart"
               disabled={cartItem.quantity > 1 ? false : true}
-              onClick={() =>
-                cartDispatch({ type: "DECREASE_QUANTITY", payload: cartItem })
+              onClick={() => {
+                cartDispatch({ type: "DECREASE_QUANTITY", payload: cartItem._id })
+                decreaseQuantity(cartItem.product._id)
+                }
               }
             >
               <i className="fas fa-minus icon-xxsm"></i>
@@ -29,8 +58,9 @@ export default function CartCard({ cartItem }) {
             <h2 className="quantity bd1 bdGray m-0-05">{cartItem.quantity}</h2>
             <button
               className="btn btn-icon btn-cart"
-              onClick={() =>
-                cartDispatch({ type: "INCREASE_QUANTITY", payload: cartItem })
+              onClick={() => {
+                cartDispatch({ type: "INCREASE_QUANTITY", payload: cartItem._id })
+                increaseQuantity(cartItem.product._id)}
               }
             >
               <i className="fas fa-plus icon-xxsm"></i>
@@ -39,8 +69,8 @@ export default function CartCard({ cartItem }) {
           <button
             className="btn btn-link colorRed mt-1"
             onClick={() => {
-              cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem })
-              productDispatch({ type: "ITEM_REMOVED_FROM_CART", payload: cartItem });
+              cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem._id })
+              removeCartItem(cartItem.product._id)
               actionDispatch({
                 type: "SHOW_SUCCESS_TOAST",
                 payload: {
@@ -56,9 +86,8 @@ export default function CartCard({ cartItem }) {
           <button 
             className="btn btn-link ml-1 mt-1"
             onClick={() => {
-              productDispatch({ type: "MOVE_TO_WISHLIST", payload: cartItem });
-              cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem });
-              productDispatch({ type: "ITEM_REMOVED_FROM_CART", payload: cartItem });
+              cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem._id });
+              wishlistClickHandler(cartItem)
               actionDispatch({
                 type: "SHOW_SUCCESS_TOAST",
                 payload: {
@@ -74,8 +103,8 @@ export default function CartCard({ cartItem }) {
         </div>
       </div>
       <div className="cart-product-price">
-        <h2 className="price">{`Rs. ${cartItem.price}`}</h2>
-        <span className="price-cut">{`Rs. ${cartItem.mrp}`}</span>
+        <h2 className="price">{`Rs. ${cartItem.product.price}`}</h2>
+        <span className="price-cut">{`Rs. ${cartItem.product.mrp}`}</span>
         <span className="discount">(55% Off)</span>
       </div>
     </div>

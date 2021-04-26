@@ -21,8 +21,6 @@ export default function ToastSuccess() {
     } 
   }, toastInterval * 1000);
 
-  console.log({ toastInterval, toastMessage })
-
   return (
     <div
       class={

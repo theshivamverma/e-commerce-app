@@ -1,14 +1,13 @@
 import { useCart } from "../cart";
-import { useActionControl } from "../action-control";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useWishlist } from "../wishlist"
 import { useEffect, useState } from "react";
+import { useToast } from "../utilities/Toast"
 
 export default function ProductCard({ product }) {
   const { cartItems, cartDispatch, addToCart } = useCart();
-  const { actionDispatch } = useActionControl();
   const { wishlist, wishlistDispatch, addToWishlist, removeFromWishlist } = useWishlist();
+  const { toastDispatch } = useToast()
   const [isIncludedInWishlist, setIsIncludedInWishlist] = useState(false)
   const [inWishlistButInvisible, setInWishListButInvisible] = useState(false)
   const [currentWishlistItemId, setCurrentWishlistItemId] = useState("")
@@ -54,41 +53,32 @@ export default function ProductCard({ product }) {
   function wishlistClickHandler(product){
     if(isIncludedInWishlist){
       setIsIncludedInWishlist(false)
+      toastDispatch({ type: "SUCCESS_TOAST", payload: "Item removed from wishlist" });
       wishlistDispatch({ type: "REMOVE_FROM_WISHLIST", payload: currentWishlistItemId})
       removeFromWishlist(product._id)
     } else{
       if(inWishlistButInvisible){
+        toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to wishlist" })
         wishlistDispatch({ type: "ADD_EXISTING_TO_WISHLIST", payload: currentWishlistItemId})
         addToWishlist(product._id)
       }else{
+        toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to wishlist" });
         wishlistDispatch({ type: "ADD_NEWITEM_TO_WISHLIST", payload: product });
         addToWishlist(product._id)
       }
     }
-    actionDispatch({
-      type: "SHOW_SUCCESS_TOAST",
-      payload: {
-        time: 1,
-        message: isIncludedInWishlist
-          ? "Item removed from wishlist"
-          : "Item added to wishlist",
-        status: true,
-      },
-    });
   }
 
   function cartClickHandler(product) {
     if(isInCartButInvisible){
       cartDispatch({ type: "ADD_EXISTING_TO_CART", payload: currentCartItemId });
+      toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart"})
       addToCart(product._id)
     }else{
       cartDispatch({ type: "ADD_TO_CART", payload: product });
+      toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
       addToCart(product._id)
     }
-    actionDispatch({
-      type: "SHOW_SUCCESS_TOAST",
-      payload: { time: 1, message: "Item added to cart", status: true },
-    });
   }
 
   return (
@@ -111,7 +101,6 @@ export default function ProductCard({ product }) {
       <Link to={`/products/${product.id}`}>
         <h1 className="product-heading mt-1">{product.name}</h1>
       </Link>
-      {/* <p className="product-desc mt-05">{product.subDescription.substring(0, 20)}</p> */}
       <h2 className="price mt-05">{`Rs. ${product.price}`}</h2>
       <div className="og-price">
         <span className="price-cut">{`Rs. ${product.mrp}`}</span>

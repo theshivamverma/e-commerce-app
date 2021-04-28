@@ -6,21 +6,17 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { Routes, Route, useLocation } from "react-router-dom"
 import Home from "./components/home/Home";
 import { useFilter, getSortedData, getFilteredData } from "./components/filters"
-import { useActionControl } from "./components/action-control"
-import ToastSuccess from "./components/utilities/Toast/ToastSucess"
 import ProductDetail from "./components/product/ProductDetail";
 import { Login, Register } from "./components/login"
 import { PrivateRoute } from "./components/auth"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { Toast } from "./components/utilities/Toast"
 
 function App() {
 
   const { products } = useProduct();
 
   const { filterState: { includeOutofStock, showFastDeliveryOnly, sort, categories, priceRange } } = useFilter()
-
-  const { actionState: { menuState, showSuccessToast }, actionDispatch } = useActionControl()
-
-  console.log(showSuccessToast)
 
   const sortedData = getSortedData(products, sort);
   const filteredData = getFilteredData(sortedData, {
@@ -47,11 +43,9 @@ function App() {
       <Navbar />
       <button
         className="btn btn-col btn-secondary btn-float btn-menu"
-        onClick={() => actionDispatch({ type: "TOGGLE_MENU", payload: true })}
       >
         <i className="fas fa-filter menu icon-med"></i>
       </button>
-      {showSuccessToast && <ToastSuccess /> }
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
@@ -69,6 +63,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Toast />
     </div>
   );
 }

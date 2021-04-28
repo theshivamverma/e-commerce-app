@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react"
 import { cartReducer } from "../cart"
 import env from "react-dotenv"
+import ToastSuccess from "../utilities/Toast/Toast"
 
 const CartContext = createContext();
 
@@ -21,6 +22,7 @@ export function CartProvider( { children } ){
         console.log(data, status);
         if (status === 200) {
           dispatch({ type: "LOAD_DATA", payload: data.cart.products });
+          
         }
       } catch (error) {
         console.log(error);
@@ -29,7 +31,7 @@ export function CartProvider( { children } ){
 
     useEffect(() => {
         getCartData()
-    },[])
+    },[state.cart])
 
     async function increaseQuantity(prodId) {
       try {
@@ -55,10 +57,6 @@ export function CartProvider( { children } ){
             prodId,
           }
         );
-
-        if (status === 200) {
-          getCartData();
-        }
       } catch (error) {
         console.log(error);
       }
@@ -73,6 +71,7 @@ export function CartProvider( { children } ){
           }
         );
         if (status === 200) {
+          
           getCartData();
         }
       } catch (error) {

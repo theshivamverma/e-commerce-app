@@ -1,5 +1,5 @@
 export default function wishlistReducer(state, action){
-    console.log("wishlist reducer", {action})
+    console.log("wishlist reducer", {action}, {state})
    switch(action.type){
        case "LOAD_DATA": 
             return {...state, wishlist: action.payload}
@@ -18,7 +18,7 @@ export default function wishlistReducer(state, action){
                     if(wishlistItem._id === action.payload){
                         return {...wishlistItem, visible: true}
                     }
-                    return wishlistItem
+                    else return wishlistItem
                 })
             }
         case "REMOVE_FROM_WISHLIST":

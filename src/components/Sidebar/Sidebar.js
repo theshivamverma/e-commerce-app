@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useProduct } from "../product";
 import { useFilter } from "../filters"
-import { useActionControl } from "../action-control"
 
 export default function Sidebar() {
   const { products } = useProduct();
@@ -17,7 +16,6 @@ export default function Sidebar() {
     filterDispatch,
   } = useFilter(); 
 
-  const { actionState : { menuState }, actionDispatch } = useActionControl();
 
   const maxPrice = products.reduce((max, product) => product.price > max ? product.price : max, 0)
 
@@ -50,7 +48,7 @@ export default function Sidebar() {
   return (
     <nav
       className={
-        menuState ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
+        false ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
       }
       id="menu"
     >
@@ -62,9 +60,6 @@ export default function Sidebar() {
         <button
           className="m-0-05 btn btn-icon"
           id="menu-close"
-          onClick={() =>
-            actionDispatch({ type: "TOGGLE_MENU", payload: false })
-          }
         >
           <i className="fas fa-times icon-med"></i>
         </button>

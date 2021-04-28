@@ -4,10 +4,10 @@ import "./index.css";
 import App from "./App";
 import { ProductProvider } from "./components/product";
 import { CartProvider } from "./components/cart";
-import { FilterProvider } from "./components/filters"
-import { ActionControlProvider } from "./components/action-control"
-import { AuthProvider } from "./components/auth"
-import { WishlistProvider } from "./components/wishlist"
+import { FilterProvider } from "./components/filters";
+import { AuthProvider } from "./components/auth";
+import { WishlistProvider } from "./components/wishlist";
+import { ToastProvider } from "./components/utilities/Toast"
 import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
@@ -16,13 +16,13 @@ ReactDOM.render(
       <CartProvider>
         <WishlistProvider>
           <FilterProvider>
-            <ActionControlProvider>
-              <AuthProvider>
+            <AuthProvider>
+              <ToastProvider>
                 <Router>
                   <App />
                 </Router>
-              </AuthProvider>
-            </ActionControlProvider>
+              </ToastProvider>
+            </AuthProvider>
           </FilterProvider>
         </WishlistProvider>
       </CartProvider>

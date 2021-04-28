@@ -1,13 +1,12 @@
 import { useCart } from "../cart";
-import { useActionControl } from "../action-control"
 import { useWishlist } from "../wishlist"
 import { useState } from "react";
+import { useToast } from "../utilities/Toast"
 
 export default function CartCard({ cartItem }) {
   const { cartDispatch, increaseQuantity, decreaseQuantity, removeCartItem } = useCart();
-  const { actionDispatch } = useActionControl();
   const { wishlist, addToWishlist, wishlistDispatch } = useWishlist();
-
+  const { toastDispatch } = useToast();
   const [isInWishlist, setIsInWishlist] = useState(false)
   const [currentWishlistItemId, setCurrentWishlistItemId] = useState("")
 
@@ -25,13 +24,14 @@ export default function CartCard({ cartItem }) {
   }, [wishlist])
 
   function wishlistClickHandler(cartItem){
-    if(isInWishlist){
-      wishlistDispatch({ type: "ADD_EXISTING_TO_WISHLIST", payload: currentWishlistItemId });
-      addToWishlist(cartItem.product._id)
-    }else{
-      wishlistDispatch({ type: "ADD_NEWITEM_TO_WISHLIST", payload: cartItem.product })
-      addToWishlist(cartItem.product._id)
+    if(!isInWishlist){
+      wishlistDispatch({
+        type: "ADD_NEWITEM_TO_WISHLIST",
+        payload: cartItem.product,
+      });
     }
+    addToWishlist(cartItem.product._id);
+    toastDispatch({ type: "SUCCESS_TOAST", payload: "Item moved to wishlist" });
   }
 
   return (
@@ -42,7 +42,6 @@ export default function CartCard({ cartItem }) {
         </div>
         <div className="cart-product-desc">
           <h1 className="product-heading">{cartItem.product.name}</h1>
-          {/* <p className="product-desc mt-05">{cartItem.desc.substring(0, 20)}</p> */}
           <div className="change-quantity mt-05">
             <button
               className="btn btn-icon btn-cart"
@@ -70,15 +69,8 @@ export default function CartCard({ cartItem }) {
             className="btn btn-link colorRed mt-1"
             onClick={() => {
               cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem._id })
+              toastDispatch({ type: "SUCCESS_TOAST", payload: "Item removed from cart" })
               removeCartItem(cartItem.product._id)
-              actionDispatch({
-                type: "SHOW_SUCCESS_TOAST",
-                payload: {
-                  time: 1,
-                  message: "Item removed from cart",
-                  status: true,
-                },
-              });
             }}
           >
             Remove
@@ -87,15 +79,8 @@ export default function CartCard({ cartItem }) {
             className="btn btn-link ml-1 mt-1"
             onClick={() => {
               cartDispatch({ type: "REMOVE_CART_ITEM", payload: cartItem._id });
+              removeCartItem(cartItem.product._id)
               wishlistClickHandler(cartItem)
-              actionDispatch({
-                type: "SHOW_SUCCESS_TOAST",
-                payload: {
-                  time: 1,
-                  message: "Item moved to wishlist",
-                  status: true,
-                },
-              });
             }}
           >
             Move to Wishlist

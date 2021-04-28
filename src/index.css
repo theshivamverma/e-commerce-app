@@ -74,6 +74,13 @@
   text-decoration: underline !important;
 }
 
+.loader{
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+
 @media screen and (min-width: 768px) {
   .App {
     padding: 90px 2rem;

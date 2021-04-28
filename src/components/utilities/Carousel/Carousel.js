@@ -20,7 +20,7 @@ export default function Carousel({ imagesArr }){
 
     return (
       <div className="carousel">
-        <img class="responsive-image" src={imagesArr[currentImage]} />
+        <img className="responsive-image" src={imagesArr[currentImage]} />
       </div>
     );
 }

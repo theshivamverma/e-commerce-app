@@ -2,6 +2,8 @@
 export default function cartReducer(state, action) {
   console.log({ action, state });
   switch (action.type) {
+    case "SET_CART_ID":
+    return {...state, cartId: action.payload}
     case "LOAD_DATA":
       return { ...state, cart: action.payload };
     case "ADD_TO_CART":
@@ -49,10 +51,6 @@ export default function cartReducer(state, action) {
             return { ...cartItem, visible: false };
           } else return cartItem;
         }),
-      };
-    case "MOVE_TO_WISHLIST":
-      return {
-        ...state,
       };
     default:
       return;

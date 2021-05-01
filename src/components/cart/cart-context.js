@@ -2,36 +2,56 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react"
 import { cartReducer } from "../cart"
 import env from "react-dotenv"
-import ToastSuccess from "../utilities/Toast/Toast"
+import { useAuth } from "../auth"
 
 const CartContext = createContext();
 
 export function CartProvider( { children } ){
 
     const [state, dispatch] = useReducer(cartReducer, {
-      cartId: window.localStorage.getItem("ths_user_cart"),
+      cartId: "",
       cart: [],
     });
 
+    useEffect(() => {
+      if(localStorage.getItem("ths_login")){
+        setCartData(localStorage.getItem("ths_user_id"))
+      }
+    },[])
+
+    useEffect(() => {
+       if(localStorage.getItem("ths_login")) {
+         getCartData();
+       }
+    }, [state.cartId]);
+
     async function getCartData() {
       try {
-        const { data, status } = await axios.get(
-          `${env.BASE_URL}/cart/${state.cartId}`,
-          {}
-        );
-        console.log(data, status);
-        if (status === 200) {
-          dispatch({ type: "LOAD_DATA", payload: data.cart.products });
-          
-        }
+       if(state.cartId !== ""){
+          const { data, status } = await axios.get(
+            `${env.BASE_URL}/cart/${state.cartId}`,
+            {}
+          );
+          console.log(data, status);
+          if (status === 200) {
+            dispatch({ type: "LOAD_DATA", payload: data.cart.products });
+          }
+       }
       } catch (error) {
         console.log(error);
       }
     }
 
-    useEffect(() => {
-        getCartData()
-    },[state.cart])
+    async function setCartData(id){
+      try {
+        const { status, data : { user } } = await axios.get(`${env.BASE_URL}/user/${id}`)
+        if(status === 200){
+          dispatch({ type: "SET_CART_ID", payload: user.cart });
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
 
     async function increaseQuantity(prodId) {
       try {
@@ -57,6 +77,10 @@ export function CartProvider( { children } ){
             prodId,
           }
         );
+
+        if (status === 200) {
+          getCartData();
+        }
       } catch (error) {
         console.log(error);
       }
@@ -103,7 +127,8 @@ export function CartProvider( { children } ){
                 increaseQuantity, 
                 decreaseQuantity,
                 removeCartItem,
-                addToCart
+                addToCart, 
+                setCartData
             }}
         >
             {children}

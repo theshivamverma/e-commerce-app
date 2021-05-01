@@ -3,20 +3,33 @@ import { CartList } from "./components/cart";
 import { Navbar } from "./components/nav";
 import WishlistList from "./components/wishlist/WishlistList";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./components/home/Home";
-import { useFilter, getSortedData, getFilteredData } from "./components/filters"
+import {
+  useFilter,
+  getSortedData,
+  getFilteredData,
+} from "./components/filters";
 import ProductDetail from "./components/product/ProductDetail";
-import { Login, Register } from "./components/login"
-import { PrivateRoute } from "./components/auth"
+import { Login, Register } from "./components/login";
+import { PrivateRoute } from "./components/auth";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import { Toast } from "./components/utilities/Toast"
+import { Toast } from "./components/utilities/Toast";
+import { useEffect, useState } from "react";
 
 function App() {
+  const { products, setProducts } = useProduct();
 
-  const { products } = useProduct();
-
-  const { filterState: { includeOutofStock, showFastDeliveryOnly, sort, categories, priceRange } } = useFilter()
+  const {
+    filterState: {
+      includeOutofStock,
+      showFastDeliveryOnly,
+      sort,
+      categories,
+      priceRange,
+    },
+    filterDispatch,
+  } = useFilter();
 
   const sortedData = getSortedData(products, sort);
   const filteredData = getFilteredData(sortedData, {
@@ -26,9 +39,10 @@ function App() {
     priceRange,
   });
 
-  console.log({filteredData})
-
   const pathname = useLocation().pathname;
+
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [showProfilecard, setShowProfilecard] = useState(false)
 
   return (
     <div
@@ -40,19 +54,22 @@ function App() {
           : "App"
       }
     >
-      <Navbar />
-      <button
-        className="btn btn-col btn-secondary btn-float btn-menu"
-      >
-        <i className="fas fa-filter menu icon-med"></i>
-      </button>
+      <Navbar 
+        setShowFilterMenu={setShowFilterMenu} 
+        showProfilecard={showProfilecard} 
+        setShowProfilecard={setShowProfilecard} 
+      />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
           path="/products"
           element={
             <>
-              <Sidebar />
+              <Sidebar
+                showFilterMenu={showFilterMenu}
+                setShowFilterMenu={setShowFilterMenu}
+              />
               <ProductList products={filteredData} />
             </>
           }

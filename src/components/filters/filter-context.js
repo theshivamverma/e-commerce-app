@@ -1,17 +1,19 @@
-import { createContext, useContext, useReducer } from "react"
+import { createContext, useContext, useEffect, useReducer } from "react"
 import { filterReducer } from "../filters"
+import { getFilteredData, getSortedData } from "./filter-functions"
+import { useProduct } from "../product"
 
 const FilterContext = createContext();
 
-const initialState = {
-  includeOutofStock: false,
-  showFastDeliveryOnly: false,
-  sort: null,
-  categories: [],
-  priceRange: 19999,
-};
-
 export function FilterProvider({ children }){
+
+    const initialState = {
+      includeOutofStock: false,
+      showFastDeliveryOnly: false,
+      sort: null,
+      categories: [],
+      priceRange: 19999,
+    };
 
     const [ state, dispatch ] = useReducer(filterReducer, initialState);
 

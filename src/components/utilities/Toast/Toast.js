@@ -9,8 +9,6 @@ export default function Toast() {
 
   const [list, setList] = useState(toastList);
 
-  console.log({toastList, list, autoDelete, position, time})
-
   useEffect(() => {
     setList(toastList);
   }, [toastList, list]);
@@ -29,9 +27,7 @@ export default function Toast() {
 
   function deleteToast(id) {
     const listItemIndex = list.findIndex((e) => e.id === id);
-    // const toastListItem = toastList.findIndex((e) => e.id === id);
     list.splice(listItemIndex, 1);
-    // toastList.splice(toastListItem, 1);
     setList([...list]);
   }
 

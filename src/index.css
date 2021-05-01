@@ -1,9 +1,27 @@
 .App {
   margin: 0;
-  padding: 50px 0;
+  padding: 50px 0 80px 0;
   box-sizing: border-box;
   padding-top: 80px;
   overflow-y: hidden;
+}
+
+body::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0.8rem;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #dfe4ea;
+  border-radius: 1rem;
+}
+
+.btn:focus {
+  border: none !important;
+}
+
+button:focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .leftfixed-nav {
@@ -12,14 +30,6 @@
   height: calc(100vh - 60px) !important;
   overflow-y: scroll !important;
   z-index: 99 !important;
-}
-
-.btn-menu {
-  display: initial;
-  position: fixed;
-  bottom: 2% !important;
-  right: 2% !important;
-  z-index: 12 !important;
 }
 
 .icon-lg {
@@ -66,19 +76,139 @@
   width: 100%;
 }
 
-.login-container{
+.login-container {
   width: 90%;
 }
 
-.underline{
+.underline {
   text-decoration: underline !important;
 }
 
-.loader{
+.loader {
   position: absolute !important;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%);
+}
+
+.menu {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100% !important;
+  background-color: #fff;
+  height: 75px;
+  z-index: 9;
+  padding: 0 0.7rem;
+  align-items: center;
+}
+
+.menu > a > button > i {
+  font-size: 1.2rem !important;
+}
+
+.menu > button > i {
+  font-size: 1rem !important;
+}
+
+.menu > a > button > p {
+  font-size: 0.7rem !important;
+}
+
+.menu > button > p {
+  font-size: 0.7rem !important;
+}
+
+.og-price {
+  flex-wrap: wrap !important;
+}
+
+.review {
+  margin: 0rem 0 0 0.5rem !important;
+}
+
+.label {
+  width: 110px !important;
+  margin: 0.5rem 0 !important;
+}
+
+.product-img {
+  height: 150px;
+}
+
+.product-heading {
+  font-size: 0.8rem;
+}
+.price {
+  font-size: 0.85rem;
+}
+.price-cut {
+  font-size: 0.7rem;
+}
+.card-product {
+  padding: 0.6rem;
+}
+.discount {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.cart-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-items {
+  width: 100%;
+}
+
+.cart-info {
+  width: 100%;
+  margin: 0;
+}
+
+.cart-product-img {
+  width: 100px !important;
+}
+
+.cart-product-img > img {
+  width: 100px !important;
+}
+
+.brand-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+.btn-addtocart {
+  font-size: 0.8rem !important;
+}
+
+.profile-buttons {
+  padding: 1rem 0.5rem;
+  position: fixed !important;
+  bottom: 75px !important;
+  right: -100%;
+  background-color: #fff;
+  width: 100%;
+  height: 120px;
+  flex-direction: column;
+  z-index: 999;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--box-shadow-down);
+  transition: ease-in 0.2s;
+}
+
+.profile-buttons.active{
+  right: 0 !important;
+}
+
+.profile-buttons > button:nth-child(2) {
+  margin-left: 0;
 }
 
 @media screen and (min-width: 768px) {
@@ -91,9 +221,6 @@
   }
   .nav {
     left: 0;
-  }
-  .btn-menu {
-    display: none;
   }
   .leftfixed-nav {
     top: 80px;
@@ -109,8 +236,69 @@
   .App.home {
     padding: 90px 0.5rem;
   }
+  .menu {
+    width: 40% !important;
+    position: initial !important;
+  }
+  .btn-filter {
+    display: none !important;
+  }
+  .price-cut {
+    width: initial !important;
+  }
+  .review {
+    margin: 0 0.5rem !important;
+  }
+  .label {
+    width: 110px !important;
+    margin: 0.5rem 0 !important;
+  }
+  .product-img {
+    height: 200px;
+  }
+  .product-heading {
+    font-size: 0.9rem;
+  }
 
-  .login-container{
+  .login-container {
     width: 400px;
+  }
+  .price {
+    font-size: 1rem;
+  }
+  .price-cut {
+    font-size: 0.8rem;
+  }
+  .discount {
+    font-size: 0.8rem;
+  }
+  .cart-page {
+    display: flex;
+    flex-direction: initial;
+  }
+  .cart-items {
+    width: 60%;
+  }
+  .cart-info {
+    width: 40%;
+    margin: 0 1rem;
+  }
+  .wishlist-container {
+    padding: 0 12.5%;
+  }
+  .profile-buttons {
+    padding: initial;
+    position: initial !important;
+    background-color: #fff;
+    width: initial;
+    height: initial;
+    flex-direction: initial;
+    z-index: initial;
+    justify-content: initial;
+    align-items: center;
+    box-shadow: none;
+  }
+  .profile-buttons > button:nth-child(2) {
+    margin-left: 4rem;
   }
 }

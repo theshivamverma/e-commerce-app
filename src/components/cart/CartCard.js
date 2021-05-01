@@ -8,14 +8,19 @@ export default function CartCard({ cartItem }) {
   const { wishlist, addToWishlist, wishlistDispatch } = useWishlist();
   const { toastDispatch } = useToast();
   const [isInWishlist, setIsInWishlist] = useState(false)
+  const [isInWishlistButInvisible, setIsInWishlistButInvisible] = useState(false)
   const [currentWishlistItemId, setCurrentWishlistItemId] = useState("")
 
   function checkForWishlist(){
     wishlist.map(wishlistItem => {
       if(wishlistItem.product._id === cartItem.product._id){
-        setIsInWishlist(true)
+        if(wishlistItem.visible === true){
+          setIsInWishlist(true);
+        }else{
+          setIsInWishlistButInvisible(true)
+        }
+        setCurrentWishlistItemId(wishlistItem._id);
       }
-      setCurrentWishlistItemId(wishlistItem._id)
     })
   }
 
@@ -24,11 +29,20 @@ export default function CartCard({ cartItem }) {
   }, [wishlist])
 
   function wishlistClickHandler(cartItem){
-    if(!isInWishlist){
-      wishlistDispatch({
-        type: "ADD_NEWITEM_TO_WISHLIST",
-        payload: cartItem.product,
-      });
+
+    if(isInWishlist === false){
+      if (isInWishlistButInvisible){
+        wishlistDispatch({
+          type: "ADD_EXISTING_TO_WISHLIST",
+          payload: currentWishlistItemId,
+        });
+      }
+      else{
+         wishlistDispatch({
+           type: "ADD_NEWITEM_TO_WISHLIST",
+           payload: cartItem.product,
+         });
+      }
     }
     addToWishlist(cartItem.product._id);
     toastDispatch({ type: "SUCCESS_TOAST", payload: "Item moved to wishlist" });

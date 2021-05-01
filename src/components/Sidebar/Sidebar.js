@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useProduct } from "../product";
-import { useFilter } from "../filters"
+import { useFilter } from "../filters";
 
-export default function Sidebar() {
+export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
   const { products } = useProduct();
 
   const {
@@ -14,16 +14,18 @@ export default function Sidebar() {
       priceRange,
     },
     filterDispatch,
-  } = useFilter(); 
+  } = useFilter();
 
+  const maxPrice = products.reduce(
+    (max, product) => (product.price > max ? product.price : max),
+    0
+  );
 
-  const maxPrice = products.reduce((max, product) => product.price > max ? product.price : max, 0)
-
-  const [priceLimit, setPriceLimit] = useState(0)
+  const [priceLimit, setPriceLimit] = useState(0);
 
   useEffect(() => {
-    setPriceLimit(maxPrice)
-  }, [maxPrice])
+    setPriceLimit(maxPrice);
+  }, [maxPrice]);
 
   function getCategories(productList) {
     let categoryArr = [];
@@ -37,19 +39,20 @@ export default function Sidebar() {
 
   const productCategories = getCategories(products);
 
-  function setCategory(e, categoryName){
-    if(e.target.checked){
+  function setCategory(e, categoryName) {
+    if (e.target.checked) {
       filterDispatch({ type: "ADD_CATEGORY_TO_FILTER", payload: categoryName });
-    } else{
-      filterDispatch({ type: "REMOVE_CATEGORY_FROM_FILTER", payload: categoryName });
+    } else {
+      filterDispatch({
+        type: "REMOVE_CATEGORY_FROM_FILTER",
+        payload: categoryName,
+      });
     }
   }
 
   return (
     <nav
-      className={
-        false ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
-      }
+      className={showFilterMenu ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"}
       id="menu"
     >
       <div className="top-element">
@@ -57,16 +60,16 @@ export default function Sidebar() {
           <img src="/images/panda.png" alt="" />
           <h3>Product Filters</h3>
         </a>
-        <button
-          className="m-0-05 btn btn-icon"
-          id="menu-close"
+        <button 
+          className="m-0-05 btn btn-icon" id="menu-close"
+          onClick={() => setShowFilterMenu(false)}
         >
           <i className="fas fa-times icon-med"></i>
         </button>
       </div>
-      <fieldset>
-        <legend>Sort by Price</legend>
-        <span className="groupinput">
+      <div className="filter-card box-shadow-down p-1">
+        <p className="font-size-sm letter-spaced uppercase">Sort by Price</p>
+        <span className="groupinput mt-05">
           <label>Low to High</label>
           <input
             type="radio"
@@ -88,9 +91,15 @@ export default function Sidebar() {
             }
           />
         </span>
-      </fieldset>
-      <fieldset className="mt-1">
-        <legend>Filter</legend>
+        <button
+          className="btn btn-outline border-round mt-05 font-size-xsm"
+          onClick={() => filterDispatch({ type: "CLEAR_SORT_FILTER" })}
+        >
+          Clear
+        </button>
+      </div>
+      <div className="filter-card box-shadow-down p-1 mt-1">
+        <p className="font-size-sm letter-spaced uppercase">Availabilty</p>
         <span className="groupinput">
           <label>Include Out of Stock</label>
           <input
@@ -109,9 +118,9 @@ export default function Sidebar() {
             onChange={() => filterDispatch({ type: "SHOW_FAST_DELIVERY_ONLY" })}
           />
         </span>
-      </fieldset>
-      <fieldset className="mt-1">
-        <legend>categories</legend>
+      </div>
+      <div className="filter-card box-shadow-down p-1 mt-1">
+        <p className="font-size-sm letter-spaced uppercase">categories</p>
         {productCategories.map((category, index) => {
           return (
             <span className="groupinput" key={index}>
@@ -125,12 +134,12 @@ export default function Sidebar() {
             </span>
           );
         })}
-      </fieldset>
-      <fieldset className="mt-1">
-        <legend>Price range</legend>
+      </div>
+      <div className="filter-card box-shadow-down p-1 mt-1">
+        <p className="font-size-sm letter-spaced uppercase">Price range</p>
         <span className="groupinput">
           <input
-            className="price-slider"
+            className="mt-1"
             type="range"
             min="0"
             max="19999"
@@ -149,7 +158,7 @@ export default function Sidebar() {
           <span>0</span>
           <span>{priceLimit}</span>
         </p>
-      </fieldset>
+      </div>
     </nav>
   );
 }

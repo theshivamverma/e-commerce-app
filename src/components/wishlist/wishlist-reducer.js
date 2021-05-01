@@ -1,6 +1,11 @@
 export default function wishlistReducer(state, action){
     console.log("wishlist reducer", {action}, {state})
    switch(action.type){
+       case "SET_WISHLIST_ID":
+           return {
+               ...state,
+               wishlistId: action.payload
+           }
        case "LOAD_DATA": 
             return {...state, wishlist: action.payload}
        case "ADD_NEWITEM_TO_WISHLIST": 

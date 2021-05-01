@@ -1,11 +1,15 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../auth"
+import { useWishlist } from "../wishlist"
+import { useCart } from "../cart"
 
 export default function Login() {
   const [userName, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const { login, loginUser } = useAuth();
+  const { setWishlistData } = useWishlist()
+  const { setCartData } = useCart();
 
   const { state } = useLocation();
 
@@ -24,7 +28,12 @@ export default function Login() {
         <input type="password" className="input-textbox focus-blue" placeholder=" " onChange={(e) => setPassword(e.target.value)} />
         <span className="input-label">Password</span>
       </label>
-      <button className="btn btn-col btn-primary border-round btn-block" onClick={() => loginUser(userName, password)}>
+      <button className="btn btn-col btn-primary border-round btn-block" 
+      onClick={async () => {
+          const id = await loginUser(userName, password);
+          setWishlistData(id);
+          setCartData(id)
+      }}>
         Login
       </button>
       <p class="mt-1 center">

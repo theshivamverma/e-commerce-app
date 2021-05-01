@@ -6,27 +6,38 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [login, setLogin] = useState(false);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     if (localStorage.getItem("ths_login")) {
       setLogin(JSON.parse(localStorage.getItem("ths_login")));
+      setUserData();
     }
-  }, []);
+  },[]);
 
-  function setUserLogin(userId, cartId, wishlistId) {
+  async function setUserData(){
+    try{
+      const { status, data : {user} } = await axios.get(`${env.BASE_URL}/user/${localStorage.getItem("ths_user_id")}`)
+      if(status === 200){
+        setUser({...user})
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  function setUserLogin(userId) {
     setLogin(true);
     localStorage.setItem("ths_login", true);
     localStorage.setItem("ths_user_id", userId);
-    localStorage.setItem("ths_user_cart", cartId);
-    localStorage.setItem("ths_user_wishlist", wishlistId);
+    setUserData()
+    return userId
   }
 
   function userLogout() {
     setLogin(false);
     localStorage.removeItem("ths_login");
     localStorage.removeItem("ths_user_id");
-    localStorage.removeItem("ths_user_cart");
-    localStorage.removeItem("ths_user_wishlist");
   }
 
   async function loginUser(username, password) {
@@ -36,11 +47,7 @@ export function AuthProvider({ children }) {
         password,
       });
       if (status === 200) {
-        setUserLogin(
-          data.user[0]._id,
-          data.user[0].cart,
-          data.user[0].wishlist
-        );
+        return setUserLogin(data.user[0]._id);
       }
     } catch (err) {
       console.log(err);
@@ -75,12 +82,9 @@ export function AuthProvider({ children }) {
           wishlist,
         }
       );
+      console.log({userData})
       if (userStatus === 200) {
-        setUserLogin(
-          userData.savedUser._id,
-          userData.savedUser.cart,
-          userData.savedUser.wishlist
-        );
+        setUserLogin(userData.savedUser._id,);
       }
     } catch (error) {
       console.log(error);
@@ -88,7 +92,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ login, loginUser, registerUser }}>
+    <AuthContext.Provider value={{ login, user, loginUser, registerUser, userLogout }}>
       {children}
     </AuthContext.Provider>
   );

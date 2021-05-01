@@ -1,10 +1,12 @@
-export function getSortedData(productList, sort) {
+export function getSortedData(products, sort) {
+  let productList = [...products]
   if (sort !== null && sort === "LOW_TO_HIGH") {
     return productList.sort((a, b) => a["price"] - b["price"]);
   }
   if (sort !== null && sort === "HIGH_TO_LOW") {
     return productList.sort((a, b) => b["price"] - a["price"]);
   }
+  if(sort === null)
   return productList;
 }
 

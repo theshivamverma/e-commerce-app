@@ -5,7 +5,10 @@ export default function filterReducer(state, action) {
     case "SHOW_FAST_DELIVERY_ONLY":
       return { ...state, showFastDeliveryOnly: !state.showFastDeliveryOnly };
     case "SORT":
-      return { ...state, sort: action.payload };
+      return { 
+        ...state, 
+        sort: action.payload,
+      };
     case "ADD_CATEGORY_TO_FILTER":
       return { ...state, categories: [...state.categories, action.payload] };
     case "REMOVE_CATEGORY_FROM_FILTER":
@@ -15,6 +18,8 @@ export default function filterReducer(state, action) {
       };
     case "SET_PRICE_RANGE":
       return { ...state, priceRange: action.payload };
+    case "CLEAR_SORT_FILTER": 
+      return { ...state, sort: null}
     default:
       return;
   }

@@ -1,10 +1,16 @@
 import { ProductCard } from "../product";
 import { useWishlist } from "../wishlist"
+import { useAuth } from "../auth"
+import { useEffect } from "react";
 
 export default function WishlistList() {
-  const { wishlist } = useWishlist()
+  const { login } = useAuth()
+  const { wishlist, setWishlistData, getWishlistData } = useWishlist()
+  // useEffect(() => {
+  //   setWishlistData()
+  // }, [login])
   return wishlist.filter((wishlistItem) => wishlistItem.visible).length > 0 ? (
-    <div className="grid-container web-four mob-two p2 mt2">
+    <div className="wishlist-container grid-container web-four mob-two p2 mt2">
       {wishlist
         .filter((wishlistItem) => wishlistItem.visible)
         .map((wishlistItem) => (

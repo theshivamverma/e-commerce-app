@@ -13,10 +13,10 @@ export default function Home(){
       <>
         <Carousel imagesArr={imagesArr} />
         <div className="center mt-2">
-          <h1 className="font-size-xl medium letter-spaced">
+          <h1 className="font-size-l medium letter-spaced">
             Welcome to The Healing Store
           </h1>
-          <h2 className="font-size-l mt-1 light letter-spaced">Studies have suggested that a hobby is best suited for self-care, healing process and some me time.</h2>
+          <h2 className="font-size-m mt-1 light letter-spaced">A hobby is the perfect way to start the healing process, get some mental peace and to spend some me time.</h2>
           <h2 className="font-size-m mt-1 extra-light letter-spaced">Start a new hobby with handpicked products from experts</h2>
           <Link to="/products">
               <button class="btn btn-col btn-primary mt-1 font-size-m border-round">Start Shopping</button>

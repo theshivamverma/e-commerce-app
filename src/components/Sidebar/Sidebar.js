@@ -52,22 +52,28 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
 
   return (
     <nav
-      className={showFilterMenu ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"}
+      className={
+        showFilterMenu ? "leftfixed-nav active p-1-0" : "leftfixed-nav p-1-0"
+      }
       id="menu"
     >
+      <h3>Product Filters</h3>
       <div className="top-element">
-        <a href="/" className="logo">
-          <img src="/images/panda.png" alt="" />
-          <h3>Product Filters</h3>
-        </a>
-        <button 
-          className="m-0-05 btn btn-icon" id="menu-close"
+        <button
+          className="btn btn-outline border-round btn-filter"
           onClick={() => setShowFilterMenu(false)}
         >
-          <i className="fas fa-times icon-med"></i>
+          Apply
+        </button>
+        <button
+          className="btn btn-outline border-round"
+          id="menu-close"
+          onClick={() => setShowFilterMenu(false)}
+        >
+          Close
         </button>
       </div>
-      <div className="filter-card box-shadow-down p-1">
+      <div className="filter-card box-shadow-down p-1 mt-05">
         <p className="font-size-sm letter-spaced uppercase">Sort by Price</p>
         <span className="groupinput mt-05">
           <label>Low to High</label>
@@ -95,7 +101,7 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
           className="btn btn-outline border-round mt-05 font-size-xsm"
           onClick={() => filterDispatch({ type: "CLEAR_SORT_FILTER" })}
         >
-          Clear
+          Clear Sort
         </button>
       </div>
       <div className="filter-card box-shadow-down p-1 mt-1">

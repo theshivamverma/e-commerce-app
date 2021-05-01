@@ -1,5 +1,4 @@
 export default function wishlistReducer(state, action){
-    console.log("wishlist reducer", {action}, {state})
    switch(action.type){
        case "SET_WISHLIST_ID":
            return {

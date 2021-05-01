@@ -76,7 +76,7 @@ function App() {
         />
         <Route path="/products/:productId" element={<ProductDetail />} />
         <PrivateRoute path="/cart" element={<CartList />} />
-        <Route path="/wishlist" element={<WishlistList />} />
+        <PrivateRoute path="/wishlist" element={<WishlistList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

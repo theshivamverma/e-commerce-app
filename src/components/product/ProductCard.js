@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useWishlist } from "../wishlist";
 import { useEffect, useState } from "react";
 import { useToast } from "../utilities/Toast";
+import { useAuth } from "../auth"
 
 export default function ProductCard({ product }) {
+  const { login } = useAuth();
   const { cartItems, cartDispatch, addToCart } = useCart();
   const {
     wishlist,
@@ -62,68 +64,83 @@ export default function ProductCard({ product }) {
   }, [product, wishlist, cartItems]);
 
   function wishlistClickHandler(product) {
-    if (isIncludedInWishlist) {
-      setIsIncludedInWishlist(false);
-      toastDispatch({
-        type: "SUCCESS_TOAST",
-        payload: "Item removed from wishlist",
-      });
-      wishlistDispatch({
-        type: "REMOVE_FROM_WISHLIST",
-        payload: currentWishlistItemId,
-      });
-      removeFromWishlist(product._id);
-    } else {
-      if (inWishlistButInvisible) {
+    if(login){
+     if (isIncludedInWishlist) {
+       setIsIncludedInWishlist(false);
+       toastDispatch({
+         type: "SUCCESS_TOAST",
+         payload: "Item removed from wishlist",
+       });
+       wishlistDispatch({
+         type: "REMOVE_FROM_WISHLIST",
+         payload: currentWishlistItemId,
+       });
+       removeFromWishlist(product._id);
+     } else {
+       if (inWishlistButInvisible) {
+         toastDispatch({
+           type: "SUCCESS_TOAST",
+           payload: "Item added to wishlist",
+         });
+         wishlistDispatch({
+           type: "ADD_EXISTING_TO_WISHLIST",
+           payload: currentWishlistItemId,
+         });
+         addToWishlist(product._id);
+       } else {
+         toastDispatch({
+           type: "SUCCESS_TOAST",
+           payload: "Item added to wishlist",
+         });
+         wishlistDispatch({
+           type: "ADD_NEWITEM_TO_WISHLIST",
+           payload: product,
+         });
+         addToWishlist(product._id);
+       }
+     } 
+    }else{
         toastDispatch({
-          type: "SUCCESS_TOAST",
-          payload: "Item added to wishlist",
+          type: "INFO_TOAST",
+          payload: "You are not logged in!",
         });
-        wishlistDispatch({
-          type: "ADD_EXISTING_TO_WISHLIST",
-          payload: currentWishlistItemId,
-        });
-        addToWishlist(product._id);
-      } else {
-        toastDispatch({
-          type: "SUCCESS_TOAST",
-          payload: "Item added to wishlist",
-        });
-        wishlistDispatch({ type: "ADD_NEWITEM_TO_WISHLIST", payload: product });
-        addToWishlist(product._id);
-      }
+
     }
   }
 
   function cartClickHandler(product) {
-    if (isInCartButInvisible) {
-      cartDispatch({
-        type: "ADD_EXISTING_TO_CART",
-        payload: currentCartItemId,
-      });
-      toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
-      addToCart(product._id);
-    } else {
-      cartDispatch({ type: "ADD_TO_CART", payload: product });
-      toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
-      addToCart(product._id);
+    if(login){
+      if (isInCartButInvisible) {
+        cartDispatch({
+          type: "ADD_EXISTING_TO_CART",
+          payload: currentCartItemId,
+        });
+        toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
+        addToCart(product._id);
+      } else {
+        cartDispatch({ type: "ADD_TO_CART", payload: product });
+        toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
+        addToCart(product._id);
+      }
+    }else{
+        toastDispatch({ type: "INFO_TOAST", payload: "You are not logged in!" });
     }
   }
 
   return (
     <div className="card-product p-1 card-shadow">
       {/* {product.tags.length > 0 && product.tags[0] !== "" && (
-        <div class="product-badge">
+        <div className="product-badge">
           {product.tags[0]}
-          <span class="top-triangle"></span>
-          <span class="bottom-triangle"></span>
+          <span className="top-triangle"></span>
+          <span className="bottom-triangle"></span>
         </div>
       )} */}
       {!product.inStock && <div className="product-badge">Out of Stock</div>}
       <div className="product-img">
         <img src={product.images[0]} alt="" />
         <button
-          class="btn btn-icon wishlist"
+          className="btn btn-icon wishlist"
           onClick={() => wishlistClickHandler(product)}
         >
           <i
@@ -135,7 +152,7 @@ export default function ProductCard({ product }) {
           ></i>
         </button>
       </div>
-      <Link to={`/products/${product.id}`}>
+      <Link to={`/products/${product._id}`}>
         <h1 className="product-heading mt-1" style={{ height: "40px" }}>
           {product.name}
         </h1>
@@ -147,7 +164,7 @@ export default function ProductCard({ product }) {
           ((product.mrp - product.price) * 100) / product.mrp
         )}% Off)`}</span>
         <span
-          class={`review ${
+          className={`review ${
             product.rating >= 4
               ? "bgAlertGreen"
               : product.rating >= 3
@@ -159,7 +176,7 @@ export default function ProductCard({ product }) {
           <i className="fas fa-star"></i>
         </span>
       </div>
-      <span class="review label font-size-sm bgLightBlue colorBlack mt-05 border-round">
+      <span className="review label font-size-sm bgLightBlue colorBlack mt-05 border-round">
         {product.fastDelivery ? "Super Fast Shipping" : "Regular Shipping"}
       </span>
       <p className="font-size-sm light">{product.brand}</p>

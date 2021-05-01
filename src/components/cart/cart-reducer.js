@@ -1,6 +1,5 @@
 
 export default function cartReducer(state, action) {
-  console.log({ action, state });
   switch (action.type) {
     case "SET_CART_ID":
     return {...state, cartId: action.payload}

@@ -25,8 +25,8 @@ button:focus {
 }
 
 .leftfixed-nav {
-  padding: 1rem 2rem;
-  top: 60px;
+  padding: 1rem;
+  top: 70px;
   height: calc(100vh - 60px) !important;
   overflow-y: scroll !important;
   z-index: 99 !important;
@@ -39,7 +39,7 @@ button:focus {
 .groupinput {
   display: block;
   width: 100%;
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -55,7 +55,7 @@ button:focus {
 .price-display {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 2rem;
 }
 
 .alert {
@@ -194,7 +194,7 @@ button:focus {
   right: -100%;
   background-color: #fff;
   width: 100%;
-  height: 120px;
+  height: 150px;
   flex-direction: column;
   z-index: 999;
   justify-content: space-between;
@@ -203,12 +203,20 @@ button:focus {
   transition: ease-in 0.2s;
 }
 
-.profile-buttons.active{
+.profile-buttons.active {
   right: 0 !important;
 }
 
 .profile-buttons > button:nth-child(2) {
   margin-left: 0;
+}
+
+.home > h1 {
+  font-size: 1.3rem;
+}
+
+.home > h2 {
+  font-size: 1rem;
 }
 
 @media screen and (min-width: 768px) {
@@ -300,5 +308,15 @@ button:focus {
   }
   .profile-buttons > button:nth-child(2) {
     margin-left: 4rem;
+  }
+  .top-element {
+    display: none !important;
+  }
+  .home > h1 {
+    font-size: 1.8rem;
+  }
+
+  .home > h2 {
+    font-size: 1.2rem;
   }
 }

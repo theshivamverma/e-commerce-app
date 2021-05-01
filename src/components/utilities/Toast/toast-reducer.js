@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid"
 
 export default function toastReducer(state, action){
-    console.log(action)
     switch (action.type) {
       case "SUCCESS_TOAST":
         return {

@@ -6,7 +6,7 @@ export default function ProductList({ products }) {
     <div className="grid-container web-four mob-two p2 mt2" style={{"position": "relative"}}>
       {products.length > 0 ? (
         products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product._id} product={product} />
         ))
       ) : (
         <Loader type="TailSpin" color="#002A46" height={50} width={50} className="loader" />

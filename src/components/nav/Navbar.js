@@ -81,7 +81,7 @@ export default function Navbar({ setShowFilterMenu, showProfilecard, setShowProf
       >
         <button className="btn btn-icon icon-text-right">
           <i className="fas fa-user icon-lg"></i>
-          <p style={{ "text-transform": "initial" }}>
+          <p style={{ "textTransform": "initial" }}>
             {login ? (
               user.username && `Hi ${user.username}`
             ) : (
@@ -109,6 +109,13 @@ export default function Navbar({ setShowFilterMenu, showProfilecard, setShowProf
             Logout
           </button>
         )}
+        <button
+          className="btn btn-outline border-round"
+          id="menu-close"
+          onClick={() => setShowProfilecard(false)}
+        >
+          Close
+        </button>
       </div>
     </nav>
   );

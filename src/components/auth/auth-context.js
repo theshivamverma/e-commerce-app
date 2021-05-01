@@ -82,7 +82,6 @@ export function AuthProvider({ children }) {
           wishlist,
         }
       );
-      console.log({userData})
       if (userStatus === 200) {
         setUserLogin(userData.savedUser._id,);
       }

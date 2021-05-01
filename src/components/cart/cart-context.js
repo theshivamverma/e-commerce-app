@@ -32,7 +32,6 @@ export function CartProvider( { children } ){
             `${env.BASE_URL}/cart/${state.cartId}`,
             {}
           );
-          console.log(data, status);
           if (status === 200) {
             dispatch({ type: "LOAD_DATA", payload: data.cart.products });
           }

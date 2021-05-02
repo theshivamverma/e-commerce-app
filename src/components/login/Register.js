@@ -34,7 +34,7 @@ export default function Register() {
       <button className="btn btn-col btn-primary border-round btn-block" onClick={() => registerUser(name, email, username, password)}>
         Register
       </button>
-      <p class="mt-1 center">
+      <p className="mt-1 center">
         Existing user then{" "}
         <Link to="/login">
           <span className="underline">Login</span>

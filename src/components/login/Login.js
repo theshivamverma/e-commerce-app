@@ -36,7 +36,7 @@ export default function Login() {
       }}>
         Login
       </button>
-      <p class="mt-1 center">
+      <p className="mt-1 center">
         Are you a New user then{" "}
         <Link to="/register">
           <span className="underline">Register</span>

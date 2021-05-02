@@ -40,7 +40,7 @@ export default function Toast() {
             className={`notification toast ${position} ${toast.category}`}
           >
             <div className="notification-image">
-              <i class={`${toast.icon} mr-1 icon-med`}></i>
+              <i className={`${toast.icon} mr-1 icon-med`}></i>
             </div>
             <div>
               <p className="notification-title">{toast.message}</p>

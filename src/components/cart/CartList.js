@@ -18,7 +18,7 @@ export default function CartList() {
 
   return cartItems.filter((cartItem) => cartItem.visible).length > 0 ? (
     <div className="cart-page">
-      <div class="cart-items stacked-list mt1">
+      <div className="cart-items stacked-list mt1">
         <div className="items-header flex justify-sb p-0-1 pt-1">
           <h1 className="font-size-m light">
             My Cart({cartItems.filter((cartItem) => cartItem.visible).length})
@@ -29,7 +29,7 @@ export default function CartList() {
         {cartItems
           .filter((cartItem) => cartItem.visible)
           .map((cartItem) => {
-            return <CartCard cartItem={cartItem} />;
+            return <CartCard key={cartItem._id} cartItem={cartItem} />;
           })}
       </div>
       <div className="cart-info p-1-0">

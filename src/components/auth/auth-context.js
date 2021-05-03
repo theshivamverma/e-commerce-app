@@ -12,6 +12,7 @@ export function AuthProvider({ children }) {
       setLogin(JSON.parse(localStorage.getItem("ths_login")));
       setUserData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function setUserData() {

@@ -32,6 +32,7 @@ export function WishlistProvider({ children }) {
     if (localStorage.getItem("ths_login")) {
       setWishlistData(localStorage.getItem("ths_user_id"));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

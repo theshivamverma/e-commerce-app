@@ -25,17 +25,20 @@ export default function Register() {
   login && navigate("/")
 
   useEffect(() => {
-    (async function(){
+    (async function () {
       try {
-        const { status, data } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/user`)
-        if(status === 200){
-          setUsers(data.userData)
+        const { status, data } = await axios.get(
+          `${process.env.REACT_APP_BACKEND_BASE_URL}/user`
+        );
+        if (status === 200) {
+          setUsers(data.userData);
         }
       } catch (error) {
-        console.lof(error)
+        console.lof(error);
       }
-    })()
-  },[])
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   function checkForUsername(){
     if(username !== ""){

@@ -1,8 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { cartReducer } from "../cart";
-import env from "react-dotenv";
-import { useAuth } from "../auth";
 
 const CartContext = createContext();
 

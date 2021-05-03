@@ -92,7 +92,6 @@ export function AuthProvider({ children }) {
         }
       );
       if (userStatus === 200) {
-        console.log(userData.savedUser._id)
         return setUserLogin(userData.savedUser._id)
       }
     } catch (error) {

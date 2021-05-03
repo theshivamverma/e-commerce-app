@@ -15,7 +15,6 @@ export default function ProductDetail() {
   const [product, setProduct] = useState();
 
   useEffect(() => {
-    console.log(productId);
     if (productId) {
       const value = products.find((item) => item._id == productId);
       if (value) {

@@ -12,7 +12,7 @@ export default function CartCard({ cartItem }) {
   const [currentWishlistItemId, setCurrentWishlistItemId] = useState("")
 
   function checkForWishlist(){
-    wishlist.map(wishlistItem => {
+    wishlist.forEach(wishlistItem => {
       if(wishlistItem.product._id === cartItem.product._id){
         if(wishlistItem.visible === true){
           setIsInWishlist(true);

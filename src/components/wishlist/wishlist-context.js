@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
-import env from "react-dotenv";
 import { wishlistReducer } from "../wishlist";
 
 const WishlistContext = createContext();

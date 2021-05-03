@@ -14,6 +14,7 @@ export function CartProvider({ children }) {
     if (localStorage.getItem("ths_login")) {
       setCartData(localStorage.getItem("ths_user_id"));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -105,7 +106,7 @@ export function CartProvider({ children }) {
 
   async function addToCart(prodId) {
     try {
-      const { status, data } = await axios.post(
+      const { status } = await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/cart/${state.cartId}`,
         {
           prodId,

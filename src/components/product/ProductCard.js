@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useWishlist } from "../wishlist";
 import { useEffect, useState } from "react";
 import { useToast } from "../utilities/Toast";
-import { useAuth } from "../auth"
+import { useAuth } from "../auth";
 
 export default function ProductCard({ product }) {
   const { login } = useAuth();
@@ -23,8 +23,8 @@ export default function ProductCard({ product }) {
   const [currentCartItemId, setCurrentCartItemId] = useState("");
 
   function checkForWishlist() {
-    wishlist.map((wishlistItem) => {
-      if (wishlistItem.product._id == product._id) {
+    wishlist.forEach((wishlistItem) => {
+      if (wishlistItem.product._id === product._id) {
         if (wishlistItem.visible === true) {
           setIsIncludedInWishlist(true);
         } else {
@@ -38,9 +38,9 @@ export default function ProductCard({ product }) {
   }
 
   function checkForCart() {
-    cartItems.map((cartItem) => {
-      if (cartItem.product._id == product._id) {
-        if (cartItem.visible == true) {
+    cartItems.forEach((cartItem) => {
+      if (cartItem.product._id === product._id) {
+        if (cartItem.visible === true) {
           setIsInCart(true);
         } else {
           setIsInCartButInvisible(true);
@@ -64,52 +64,51 @@ export default function ProductCard({ product }) {
   }, [product, wishlist, cartItems]);
 
   function wishlistClickHandler(product) {
-    if(login){
-     if (isIncludedInWishlist) {
-       setIsIncludedInWishlist(false);
-       toastDispatch({
-         type: "SUCCESS_TOAST",
-         payload: "Item removed from wishlist",
-       });
-       wishlistDispatch({
-         type: "REMOVE_FROM_WISHLIST",
-         payload: currentWishlistItemId,
-       });
-       removeFromWishlist(product._id);
-     } else {
-       if (inWishlistButInvisible) {
-         toastDispatch({
-           type: "SUCCESS_TOAST",
-           payload: "Item added to wishlist",
-         });
-         wishlistDispatch({
-           type: "ADD_EXISTING_TO_WISHLIST",
-           payload: currentWishlistItemId,
-         });
-         addToWishlist(product._id);
-       } else {
-         toastDispatch({
-           type: "SUCCESS_TOAST",
-           payload: "Item added to wishlist",
-         });
-         wishlistDispatch({
-           type: "ADD_NEWITEM_TO_WISHLIST",
-           payload: product,
-         });
-         addToWishlist(product._id);
-       }
-     } 
-    }else{
+    if (login) {
+      if (isIncludedInWishlist) {
+        setIsIncludedInWishlist(false);
         toastDispatch({
-          type: "INFO_TOAST",
-          payload: "You are not logged in!",
+          type: "SUCCESS_TOAST",
+          payload: "Item removed from wishlist",
         });
-
+        wishlistDispatch({
+          type: "REMOVE_FROM_WISHLIST",
+          payload: currentWishlistItemId,
+        });
+        removeFromWishlist(product._id);
+      } else {
+        if (inWishlistButInvisible) {
+          toastDispatch({
+            type: "SUCCESS_TOAST",
+            payload: "Item added to wishlist",
+          });
+          wishlistDispatch({
+            type: "ADD_EXISTING_TO_WISHLIST",
+            payload: currentWishlistItemId,
+          });
+          addToWishlist(product._id);
+        } else {
+          toastDispatch({
+            type: "SUCCESS_TOAST",
+            payload: "Item added to wishlist",
+          });
+          wishlistDispatch({
+            type: "ADD_NEWITEM_TO_WISHLIST",
+            payload: product,
+          });
+          addToWishlist(product._id);
+        }
+      }
+    } else {
+      toastDispatch({
+        type: "INFO_TOAST",
+        payload: "You are not logged in!",
+      });
     }
   }
 
   function cartClickHandler(product) {
-    if(login){
+    if (login) {
       if (isInCartButInvisible) {
         cartDispatch({
           type: "ADD_EXISTING_TO_CART",
@@ -122,8 +121,8 @@ export default function ProductCard({ product }) {
         toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
         addToCart(product._id);
       }
-    }else{
-        toastDispatch({ type: "INFO_TOAST", payload: "You are not logged in!" });
+    } else {
+      toastDispatch({ type: "INFO_TOAST", payload: "You are not logged in!" });
     }
   }
 
@@ -138,7 +137,7 @@ export default function ProductCard({ product }) {
       )} */}
       {!product.inStock && <div className="product-badge">Out of Stock</div>}
       <div className="product-img">
-        <img src={product.images[0]} alt="" />
+        <img alt="" src={product.images[0]} alt="" />
         <button
           className="btn btn-icon wishlist"
           onClick={() => wishlistClickHandler(product)}

@@ -16,7 +16,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (productId) {
-      const value = products.find((item) => item._id == productId);
+      const value = products.find((item) => item._id === productId);
       if (value) {
         setProduct({ ...value });
         setMainImage(value.images[0]);
@@ -41,8 +41,8 @@ export default function ProductDetail() {
   const [currentCartItemId, setCurrentCartItemId] = useState("");
 
   function checkForWishlist() {
-    wishlist.map((wishlistItem) => {
-      if (wishlistItem.product._id == product._id) {
+    wishlist.forEach((wishlistItem) => {
+      if (wishlistItem.product._id === product._id) {
         if (wishlistItem.visible === true) {
           setIsIncludedInWishlist(true);
         } else {
@@ -56,9 +56,9 @@ export default function ProductDetail() {
   }
 
   function checkForCart() {
-    cartItems.map((cartItem) => {
-      if (cartItem.product._id == product._id) {
-        if (cartItem.visible == true) {
+    cartItems.forEach((cartItem) => {
+      if (cartItem.product._id === product._id) {
+        if (cartItem.visible === true) {
           setIsInCart(true);
         } else {
           setIsInCartButInvisible(true);
@@ -171,6 +171,7 @@ export default function ProductDetail() {
                   }
                 >
                   <img
+                    alt=""
                     className="responsive-image"
                     src={image}
                     onMouseOver={() => setMainImage(image)}
@@ -181,7 +182,7 @@ export default function ProductDetail() {
             })}
         </div>
         <div className="main-image ml-2">
-          <img className="responsive-image" src={mainImage} />
+          <img alt="" className="responsive-image" src={mainImage} />
         </div>
       </div>
       <div className="product-description">

@@ -49,7 +49,7 @@ export function WishlistProvider({ children }) {
       } = await axios.get(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/user/${id}`
       );
-      if (status == 200) {
+      if (status === 200) {
         dispatch({ type: "SET_WISHLIST_ID", payload: user.wishlist });
       }
     } catch (error) {

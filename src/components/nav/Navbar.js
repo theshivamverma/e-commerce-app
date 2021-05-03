@@ -3,8 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 import { useWishlist } from "../wishlist";
 import { useAuth } from "../auth";
 
-export default function Navbar({ setShowFilterMenu, showProfilecard, setShowProfilecard }) {
-  const { cartItems, cartDispatch, setCartItems } = useCart();
+export default function Navbar({
+  setShowFilterMenu,
+  showProfilecard,
+  setShowProfilecard,
+}) {
+  const { cartItems, cartDispatch } = useCart();
   const { wishlist, wishlistDispatch } = useWishlist();
   const { login, user, userLogout } = useAuth();
   const pathname = useLocation().pathname;
@@ -13,6 +17,7 @@ export default function Navbar({ setShowFilterMenu, showProfilecard, setShowProf
       <Link to="/">
         <div className="flex align-center">
           <img
+            alt=""
             src="https://img.freepik.com/free-vector/hands-holding-heart-neon-sign_1262-15582.jpg?size=338&ext=jpg"
             className="brand-logo circle mr-1"
           />
@@ -81,7 +86,7 @@ export default function Navbar({ setShowFilterMenu, showProfilecard, setShowProf
       >
         <button className="btn btn-icon icon-text-right">
           <i className="fas fa-user icon-lg"></i>
-          <p style={{ "textTransform": "initial" }}>
+          <p style={{ textTransform: "initial" }}>
             {login ? (
               user.username && `Hi ${user.username}`
             ) : (

@@ -53,8 +53,10 @@ export default function Register() {
   }
 
   function validateEmail() {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    const res = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      String(email).toLowerCase()
+    );
+    return res
   }
 
   function checkForEmail() {
@@ -108,8 +110,18 @@ export default function Register() {
     checkForName()
     checkForEmail()
     checkForUsername()
-    if (!errorUsername && !errorEmail && !errorName && !errorPassword) {
-      const { id, success } = await registerUser(name, email, username, password);
+    if (
+      errorUsername === "" &&
+      errorEmail === "" &&
+      errorName === "" &&
+      errorPassword === ""
+    ) {
+      const { id, success } = await registerUser(
+        name,
+        email,
+        username,
+        password
+      );
       if (success) {
         setWishlistData(id);
         setCartData(id);
@@ -118,7 +130,10 @@ export default function Register() {
         toastDispatch({ type: "ERROR_TOAST", payload: "Error signing up" });
       }
     } else {
-      toastDispatch({ type: "ERROR_TOAST", payload: "Invalid credentail for signup" });
+      toastDispatch({
+        type: "ERROR_TOAST",
+        payload: "Invalid credentials for signup",
+      });
     }
   }
 

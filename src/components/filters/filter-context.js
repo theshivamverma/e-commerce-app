@@ -1,7 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react"
 import { filterReducer } from "../filters"
-import { getFilteredData, getSortedData } from "./filter-functions"
-import { useProduct } from "../product"
 
 const FilterContext = createContext();
 

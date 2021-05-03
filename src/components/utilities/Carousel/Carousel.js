@@ -15,6 +15,7 @@ export default function Carousel({ imagesArr }) {
 
   useEffect(() => {
     increaseIndex();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentImage]);
 
   return (

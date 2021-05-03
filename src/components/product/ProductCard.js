@@ -61,6 +61,7 @@ export default function ProductCard({ product }) {
       setInWishListButInvisible(false);
       setIsIncludedInWishlist(false);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, wishlist, cartItems]);
 
   function wishlistClickHandler(product) {
@@ -137,7 +138,7 @@ export default function ProductCard({ product }) {
       )} */}
       {!product.inStock && <div className="product-badge">Out of Stock</div>}
       <div className="product-img">
-        <img alt="" src={product.images[0]} alt="" />
+        <img alt="" src={product.images[0]} />
         <button
           className="btn btn-icon wishlist"
           onClick={() => wishlistClickHandler(product)}

@@ -39,6 +39,7 @@ export function WishlistProvider({ children }) {
     if (localStorage.getItem("ths_login")) {
       getWishlistData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.wishlistId]);
 
   async function setWishlistData(id) {
@@ -59,7 +60,7 @@ export function WishlistProvider({ children }) {
 
   async function addToWishlist(prodId) {
     try {
-      const { status, data } = await axios.post(
+      const { status } = await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/wishlist/${state.wishlistId}`,
         {
           prodId,
@@ -75,7 +76,7 @@ export function WishlistProvider({ children }) {
 
   async function removeFromWishlist(prodId) {
     try {
-      const { status, data } = await axios.post(
+      const { status } = await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/wishlist/${state.wishlistId}/remove`,
         {
           prodId,

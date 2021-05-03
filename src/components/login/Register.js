@@ -1,28 +1,28 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth"
-import { useWishlist } from "../wishlist"
-import { useCart } from "../cart"
-import { useToast } from "../utilities/Toast"
+import { useAuth } from "../auth";
+import { useWishlist } from "../wishlist";
+import { useCart } from "../cart";
+import { useToast } from "../utilities/Toast";
 
 export default function Register() {
-  const [name, setName] = useState("")    
-  const [email, setEmail] = useState("")    
-  const [username, setUsername] = useState("")    
-  const [password, setPassword] = useState("")    
-  const { login, registerUser } = useAuth()
-  const [users, setUsers] = useState([])
-  const [errorUsername, setErrorUsername] = useState("")
-  const [errorEmail, setErrorEmail] = useState("")
-  const [errorName, setErrorName] = useState("")
-  const [errorPassword, setErrorPassword] = useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, registerUser } = useAuth();
+  const [users, setUsers] = useState([]);
+  const [errorUsername, setErrorUsername] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
   const { setWishlistData } = useWishlist();
   const { setCartData } = useCart();
   const { toastDispatch } = useToast();
-  const navigate = useNavigate()
-     
-  login && navigate("/")
+  const navigate = useNavigate();
+
+  login && navigate("/");
 
   useEffect(() => {
     (async function () {
@@ -38,29 +38,29 @@ export default function Register() {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  function checkForUsername(){
-    if(username !== ""){
+  function checkForUsername() {
+    if (username !== "") {
       if (users.map((user) => user.username).includes(username)) {
         setErrorUsername("Username already taken");
       } else {
         setErrorUsername("");
       }
-    }else{
-      setErrorUsername("username is required")
+    } else {
+      setErrorUsername("username is required");
     }
   }
 
   function validateEmail() {
-    const res = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    const res = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       String(email).toLowerCase()
     );
-    return res
+    return res;
   }
 
   function checkForEmail() {
-    if(email !== ""){
+    if (email !== "") {
       if (validateEmail()) {
         if (users.map((user) => user.email).includes(email)) {
           setErrorEmail("Email already exists");
@@ -69,47 +69,47 @@ export default function Register() {
         }
       } else {
         setErrorEmail("Enter a valid email");
-      } 
-    }else{
-      setErrorEmail("Email is required")
-    }
-  }
-
-  function checkForName(){
-    if(name !== ""){
-      let res = /^[a-zA-Z ]+$/.test(name);
-      if(res){
-        setErrorName("")
-      }else{
-        setErrorName("Numbers not allowed for name")
       }
-    }else{
-      setErrorName("Name is required")
+    } else {
+      setErrorEmail("Email is required");
     }
   }
 
-  function checkForPassword(){
-    if(password !== ""){
-      if(password.length < 6){
-        setErrorPassword("Password should be atleast 6 digits long")
-      }else{
-        let res = /[0-9]/.test(password)
-        if(res){
-          setErrorPassword("")
-        }else{
-          setErrorPassword("passowrd must contain a number")
+  function checkForName() {
+    if (name !== "") {
+      let res = /^[a-zA-Z ]+$/.test(name);
+      if (res) {
+        setErrorName("");
+      } else {
+        setErrorName("Numbers not allowed for name");
+      }
+    } else {
+      setErrorName("Name is required");
+    }
+  }
+
+  function checkForPassword() {
+    if (password !== "") {
+      if (password.length < 6) {
+        setErrorPassword("Password should be atleast 6 digits long");
+      } else {
+        let res = /[0-9]/.test(password);
+        if (res) {
+          setErrorPassword("");
+        } else {
+          setErrorPassword("passowrd must contain a number");
         }
       }
-    }else{
-      setErrorPassword("Password is required")
+    } else {
+      setErrorPassword("Password is required");
     }
   }
 
-  async function registerHandler(){
-    checkForPassword()
-    checkForName()
-    checkForEmail()
-    checkForUsername()
+  async function registerHandler() {
+    checkForPassword();
+    checkForName();
+    checkForEmail();
+    checkForUsername();
     if (
       errorUsername === "" &&
       errorEmail === "" &&

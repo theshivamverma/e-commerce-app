@@ -22,6 +22,7 @@ export default function ProductDetail() {
         setMainImage(value.images[0]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, productId]);
 
   const { login } = useAuth();
@@ -81,6 +82,7 @@ export default function ProductDetail() {
       setInWishListButInvisible(false);
       setIsIncludedInWishlist(false);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, wishlist, cartItems]);
 
   function wishlistClickHandler(product) {

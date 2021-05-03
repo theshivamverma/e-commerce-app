@@ -58,7 +58,7 @@ export default function CartCard({ cartItem }) {
       <div className="card-cart p-1 mt-1 bdGray box-shadow-down">
         <div className="cart-details">
           <div className="cart-product-img">
-            <img alt="" src={cartItem.product.images[0]} alt="" />
+            <img src={cartItem.product.images[0]} alt="" />
           </div>
           <div className="cart-product-desc">
             <h1 className="product-heading">{cartItem.product.name}</h1>

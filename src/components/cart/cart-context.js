@@ -21,6 +21,7 @@ export function CartProvider({ children }) {
     if (localStorage.getItem("ths_login")) {
       getCartData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.cartId]);
 
   async function getCartData() {

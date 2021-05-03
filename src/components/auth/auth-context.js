@@ -1,5 +1,4 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import env from "react-dotenv";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -38,7 +37,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem("ths_login", true);
     localStorage.setItem("ths_user_id", userId);
     setUserData();
-    return userId;
+    return {id: userId, success: true};
   }
 
   function userLogout() {
@@ -60,7 +59,7 @@ export function AuthProvider({ children }) {
         return setUserLogin(data.user[0]._id);
       }
     } catch (err) {
-      console.log(err);
+      return {id: "", success: false};
     }
   }
 
@@ -93,10 +92,11 @@ export function AuthProvider({ children }) {
         }
       );
       if (userStatus === 200) {
-        setUserLogin(userData.savedUser._id);
+        console.log(userData.savedUser._id)
+        return setUserLogin(userData.savedUser._id)
       }
     } catch (error) {
-      console.log(error);
+      return {id: "", success: false}
     }
   }
 

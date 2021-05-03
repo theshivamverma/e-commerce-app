@@ -15,10 +15,10 @@ import { Login, Register } from "./components/login";
 import { PrivateRoute } from "./components/auth";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { Toast } from "./components/utilities/Toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
-  const { products, setProducts } = useProduct();
+  const { products } = useProduct();
 
   const {
     filterState: {
@@ -28,7 +28,6 @@ function App() {
       categories,
       priceRange,
     },
-    filterDispatch,
   } = useFilter();
 
   const sortedData = getSortedData(products, sort);

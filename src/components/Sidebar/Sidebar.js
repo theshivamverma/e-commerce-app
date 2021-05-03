@@ -11,7 +11,6 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
       showFastDeliveryOnly,
       sort,
       categories,
-      priceRange,
     },
     filterDispatch,
   } = useFilter();

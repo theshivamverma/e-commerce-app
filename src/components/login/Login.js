@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAuth } from "../auth"
 import { useWishlist } from "../wishlist"
 import { useCart } from "../cart"
+import { useToast } from "../utilities/Toast"
 
 export default function Login() {
   const [userName, setUsername] = useState("")
@@ -10,6 +11,7 @@ export default function Login() {
   const { login, loginUser } = useAuth();
   const { setWishlistData } = useWishlist()
   const { setCartData } = useCart();
+  const { toastDispatch } = useToast();
 
   const { state } = useLocation();
 
@@ -30,9 +32,14 @@ export default function Login() {
       </label>
       <button className="btn btn-col btn-primary border-round btn-block" 
       onClick={async () => {
-          const id = await loginUser(userName, password);
-          setWishlistData(id);
-          setCartData(id)
+          const {id, success} = await loginUser(userName, password);
+          if(success){
+            setWishlistData(id);
+            setCartData(id);
+            toastDispatch({ type: "SUCCESS_TOAST", payload: "Login successful" })
+          }else{
+            toastDispatch({ type: "ERROR_TOAST", payload: "Wrong credentials" })
+          }
       }}>
         Login
       </button>

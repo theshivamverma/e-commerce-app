@@ -287,7 +287,6 @@ button:focus {
 
 .detail-buttons{
   flex-direction: column-reverse;
-  /* align-items: flex-start; */
 }
 
 .detail-buttons > button:nth-child(2){
@@ -423,6 +422,7 @@ button:focus {
   .detail-product-name {
     font-size: 1.5rem;
     font-weight: 500;
+    margin-top: 0 !important;
   }
   .detail-product-desc {
     font-size: 1rem;
@@ -453,4 +453,13 @@ button:focus {
   .detail-price-discount {
     font-size: 1rem !important;
   }
+
+  .detail-buttons{
+  flex-direction: initial;
+}
+
+.detail-buttons > button:nth-child(2){
+  margin-left: 1rem !important;
+  margin-top: 0.5rem;
+}
 }

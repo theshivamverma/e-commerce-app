@@ -42,10 +42,15 @@ export default function Register() {
 
   function checkForUsername() {
     if (username !== "") {
-      if (users.map((user) => user.username).includes(username)) {
-        setErrorUsername("Username already taken");
-      } else {
-        setErrorUsername("");
+      let res = /^[a-zA-Z0-9]+$/.test(username);
+      if(res){
+         if (users.map((user) => user.username).includes(username)) {
+           setErrorUsername("Username already taken");
+         } else {
+           setErrorUsername("");
+         }
+      }else{
+        setErrorUsername("only letters and numbers allowed");
       }
     } else {
       setErrorUsername("username is required");

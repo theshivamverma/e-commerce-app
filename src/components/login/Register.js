@@ -119,7 +119,8 @@ export default function Register() {
       errorUsername === "" &&
       errorEmail === "" &&
       errorName === "" &&
-      errorPassword === ""
+      errorPassword === "" &&
+      username && email && password && name
     ) {
       const { id, success } = await registerUser(
         name,

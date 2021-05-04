@@ -13,7 +13,6 @@ export function ProductProvider({ children }) {
           `${process.env.REACT_APP_BACKEND_BASE_URL}/product`
         );
         if (status === 200) {
-          console.log(data.products)
           setProducts(() => [...data.products]);
         }
       } catch (error) {

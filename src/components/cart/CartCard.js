@@ -2,6 +2,7 @@ import { useCart } from "../cart";
 import { useWishlist } from "../wishlist";
 import { useState } from "react";
 import { useToast } from "../utilities/Toast";
+import { Link } from "react-router-dom"
 
 export default function CartCard({ cartItem }) {
   const {
@@ -61,7 +62,9 @@ export default function CartCard({ cartItem }) {
             <img src={cartItem.product.images[0]} alt="" />
           </div>
           <div className="cart-product-desc">
-            <h1 className="product-heading">{cartItem.product.name}</h1>
+            <Link to={`/products/${cartItem.product._id}`}>
+              <h1 className="product-heading">{cartItem.product.name}</h1>
+            </Link>
             <div className="change-quantity mt-05">
               <button
                 className="btn btn-icon btn-cart"

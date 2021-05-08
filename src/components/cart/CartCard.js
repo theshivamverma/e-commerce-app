@@ -133,7 +133,9 @@ export default function CartCard({ cartItem }) {
         <div className="cart-product-price">
           <h2 className="price">{`Rs. ${cartItem.product.price}`}</h2>
           <span className="price-cut">{`Rs. ${cartItem.product.mrp}`}</span>
-          <span className="discount">(55% Off)</span>
+          <span className="discount">{`(${Math.floor(
+            ((cartItem.product.mrp - cartItem.product.price) * 100) / cartItem.product.mrp
+          )}% Off)`}</span>
         </div>
       </div>
     )

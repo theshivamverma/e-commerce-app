@@ -266,14 +266,14 @@ export default function ProductDetail() {
           )}
           {isIncludedInWishlist === true && inWishlistButInvisible === false ? (
             <Link to="/wishlist">
-              <button className="btn btn-outline mt-05 border-round ml-1">
+              <button className="btn btn-outline mt-05 border-round wishlist-btn">
                 Go to Wishlist
                 <i className="fas fa-heart colorAlertRed ml-05"></i>
               </button>
             </Link>
           ) : (
             <button
-              className="btn btn-outline mt-05 border-round ml-1"
+              className="btn btn-outline mt-05 border-round wishlist-btn"
               onClick={() => wishlistClickHandler(product)}
             >
               Add to Wishlist

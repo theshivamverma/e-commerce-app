@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProduct } from "../product";
 import { useFilter } from "../filters";
+import Loader from "react-loader-spinner"
 
 export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
   const { products } = useProduct();
@@ -126,7 +127,7 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
       </div>
       <div className="filter-card box-shadow-down p-1 mt-1">
         <p className="font-size-sm letter-spaced uppercase">categories</p>
-        {productCategories.map((category, index) => {
+        {productCategories.length > 0 ? productCategories.map((category, index) => {
           return (
             <span className="groupinput" key={index}>
               <label>{category}</label>
@@ -138,7 +139,8 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
               />
             </span>
           );
-        })}
+        }) :
+        (<Loader type="TailSpin" color="#002A46" height={50} width={50} />)}
       </div>
       <div className="filter-card box-shadow-down p-1 mt-1">
         <p className="font-size-sm letter-spaced uppercase">Price range</p>

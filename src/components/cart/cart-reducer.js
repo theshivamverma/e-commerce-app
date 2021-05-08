@@ -1,34 +1,33 @@
-
-export default function cartReducer(state, action) {
-  switch (action.type) {
+export default function cartReducer(state, { type, payload }) {
+  switch (type) {
     case "SET_CART_ID":
-    return {...state, cartId: action.payload}
+      return { ...state, cartId: payload };
     case "LOAD_DATA":
-      return { ...state, cart: action.payload };
+      return { ...state, cart: payload };
     case "ADD_TO_CART":
       return {
         ...state,
         cart: state.cart.concat({
-          product: action.payload,
+          product: payload,
           quantity: 1,
-          visible: true
+          visible: true,
         }),
       };
     case "ADD_EXISTING_TO_CART":
       return {
         ...state,
-        cart: state.cart.map(cartItem => {
-          if(cartItem._id === action.payload){
-            return {...cartItem, visible: !cartItem.visible, quantity: 1}
+        cart: state.cart.map((cartItem) => {
+          if (cartItem._id === payload) {
+            return { ...cartItem, visible: !cartItem.visible, quantity: 1 };
           }
-          return cartItem
-        })
-      }
+          return cartItem;
+        }),
+      };
     case "INCREASE_QUANTITY":
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === action.payload) {
+          if (cartItem._id === payload) {
             return { ...cartItem, quantity: cartItem.quantity + 1 };
           } else return cartItem;
         }),
@@ -37,7 +36,7 @@ export default function cartReducer(state, action) {
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === action.payload) {
+          if (cartItem._id === payload) {
             return { ...cartItem, quantity: cartItem.quantity - 1 };
           } else return cartItem;
         }),
@@ -46,7 +45,7 @@ export default function cartReducer(state, action) {
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === action.payload) {
+          if (cartItem._id === payload) {
             return { ...cartItem, visible: false };
           } else return cartItem;
         }),

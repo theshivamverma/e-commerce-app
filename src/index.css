@@ -231,7 +231,7 @@ button:focus {
 .sub-images {
   width: 100% !important;
   flex-direction: row;
-  justify-content: space-between !important;
+  justify-content: space-around !important;
 }
 
 .sub-image-container {
@@ -248,6 +248,7 @@ button:focus {
 
 .main-image {
   margin-left: 0 !important;
+  min-height: 350px !important;
 }
 
 .detail-product-name {
@@ -292,6 +293,10 @@ button:focus {
 .detail-buttons > button:nth-child(2){
   margin-left: 0 !important;
   margin-top: 0.6rem;
+}
+
+.wishlist-btn{
+  margin-left: 0 !important;
 }
 
 @media screen and (min-width: 768px) {
@@ -461,5 +466,8 @@ button:focus {
 .detail-buttons > button:nth-child(2){
   margin-left: 1rem !important;
   margin-top: 0.5rem;
+}
+.wishlist-btn{
+  margin-left: 1rem !important;
 }
 }

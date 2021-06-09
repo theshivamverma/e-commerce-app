@@ -20,7 +20,12 @@ export default function Carousel({ imagesArr }) {
 
   return (
     <div className="carousel">
-      <img alt="" className="responsive-image" src={imagesArr[currentImage]} />
+      <img
+        alt=""
+        style={{ transition: "all 0.5s ease-in !important" }}
+        className="responsive-image"
+        src={imagesArr[currentImage]}
+      />
     </div>
   );
 }

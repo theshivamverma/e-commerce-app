@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { cartReducer } from "../cart";
@@ -5,23 +7,26 @@ import { cartReducer } from "../cart";
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
+
+  const { isLoggedIn } = JSON.parse(
+    localStorage?.getItem("ths_login")
+  ) || { isLoggedIn: false };
+
   const [state, dispatch] = useReducer(cartReducer, {
     cartId: "",
     cart: [],
   });
 
   useEffect(() => {
-    if (localStorage.getItem("ths_login")) {
-      setCartData(localStorage.getItem("ths_user_id"));
+    if (isLoggedIn) {
+      setCartData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("ths_login")) {
+    if (state.cartId !== "") {
       getCartData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.cartId]);
 
   async function getCartData() {
@@ -40,13 +45,13 @@ export function CartProvider({ children }) {
     }
   }
 
-  async function setCartData(id) {
+  async function setCartData() {
     try {
       const {
         status,
         data: { user },
       } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/user/${id}`
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/user/userdetail`
       );
       if (status === 200) {
         dispatch({ type: "SET_CART_ID", payload: user.cart });

@@ -1,7 +1,7 @@
 import { useCart } from "../cart";
 import { Link, useLocation } from "react-router-dom";
 import { useWishlist } from "../wishlist";
-import { useAuth } from "../auth";
+import { useAuth, logoutUser } from "../auth";
 
 export default function Navbar({
   setShowFilterMenu,
@@ -10,7 +10,7 @@ export default function Navbar({
 }) {
   const { cartItems, cartDispatch } = useCart();
   const { wishlist, wishlistDispatch } = useWishlist();
-  const { login, user, userLogout } = useAuth();
+  const { login, user, setLogin, setToken } = useAuth();
   const pathname = useLocation().pathname;
   return (
     <nav className="nav p-1 top-fixed box-shadow-down">
@@ -98,7 +98,9 @@ export default function Navbar({
           <button
             className="btn btn-link ml-3"
             onClick={() => {
-              userLogout();
+              setLogin(false)
+              setToken(null)
+              logoutUser()
               wishlistDispatch({
                 type: "LOAD_DATA",
                 payload: [],

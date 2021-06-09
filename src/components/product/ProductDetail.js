@@ -244,7 +244,7 @@ export default function ProductDetail() {
           {product.fastDelivery ? "Super Fast Shipping" : "Regular Shipping"}
         </span>
         <div className="detail-buttons flex align-center">
-          {isInCart === true ? (
+          {isInCart ? (
             <Link to="/cart">
               <button className="btn btn-col btn-outline btn-primary mt-05 border-round">
                 Go to Cart
@@ -264,7 +264,7 @@ export default function ProductDetail() {
               <i className="fas fa-shopping-cart ml-05"></i>
             </button>
           )}
-          {isIncludedInWishlist === true && inWishlistButInvisible === false ? (
+          {isIncludedInWishlist && !inWishlistButInvisible ? (
             <Link to="/wishlist">
               <button className="btn btn-outline mt-05 border-round wishlist-btn">
                 Go to Wishlist

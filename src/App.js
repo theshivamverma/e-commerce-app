@@ -1,9 +1,11 @@
+/* eslint-disable */
+
 import { ProductList, useProduct } from "./components/product";
 import { CartList } from "./components/cart";
 import { Navbar } from "./components/nav";
 import WishlistList from "./components/wishlist/WishlistList";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Home from "./components/home/Home";
 import {
   useFilter,
@@ -13,9 +15,11 @@ import {
 import ProductDetail from "./components/product/ProductDetail";
 import { Login, Register } from "./components/login";
 import { PrivateRoute } from "./components/auth";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { Toast } from "./components/utilities/Toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { setupAuthExceptionHandler } from "./components/auth"
+
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 function App() {
   const { products } = useProduct();
@@ -39,19 +43,19 @@ function App() {
   });
 
   const pathname = useLocation().pathname;
+  const navigate = useNavigate()
 
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showProfilecard, setShowProfilecard] = useState(false)
 
+  useEffect(() => {
+    setupAuthExceptionHandler(navigate);
+  }, []);
+
   return (
     <div
-      className={
-        pathname === "/products"
-          ? "App products"
-          : pathname === "/"
-          ? "App home"
-          : "App"
-      }
+      style={{ backgroundColor: "black !important" }}
+      className={`App ${pathname === "/products" && 'products'} ${pathname === "/" && 'home'}`}
     >
       <Navbar 
         setShowFilterMenu={setShowFilterMenu} 

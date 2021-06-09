@@ -5,6 +5,11 @@ import { wishlistReducer } from "../wishlist";
 const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
+
+  const { isLoggedIn } = JSON.parse(
+    localStorage?.getItem("ths_login")
+  ) || { isLoggedIn: false };
+
   const [state, dispatch] = useReducer(wishlistReducer, {
     wishlistId: "",
     wishlist: [],
@@ -29,26 +34,26 @@ export function WishlistProvider({ children }) {
   }
 
   useEffect(() => {
-    if (localStorage.getItem("ths_login")) {
-      setWishlistData(localStorage.getItem("ths_user_id"));
+    if (isLoggedIn) {
+      setWishlistData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("ths_login")) {
+    if (state.wishlistId !== "") {
       getWishlistData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.wishlistId]);
 
-  async function setWishlistData(id) {
+  async function setWishlistData() {
     try {
       const {
         status,
         data: { user },
       } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/user/${id}`
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/user/userdetail`
       );
       if (status === 200) {
         dispatch({ type: "SET_WISHLIST_ID", payload: user.wishlist });

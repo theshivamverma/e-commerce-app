@@ -1,116 +1,55 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+/* eslint-disable */
+
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth";
+import { useAuth, singupUser } from "../auth";
 import { useWishlist } from "../wishlist";
 import { useCart } from "../cart";
 import { useToast } from "../utilities/Toast";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validateUsername,
+} from "../utilities/validation/validator-functions";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login, registerUser } = useAuth();
-  const [users, setUsers] = useState([]);
+
   const [errorUsername, setErrorUsername] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+
+  const { login, setLogin } = useAuth();
   const { setWishlistData } = useWishlist();
   const { setCartData } = useCart();
   const { toastDispatch } = useToast();
+
   const navigate = useNavigate();
 
   login && navigate("/");
 
-  useEffect(() => {
-    (async function () {
-      try {
-        const { status, data } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/user`
-        );
-        if (status === 200) {
-          setUsers(data.userData);
-        }
-      } catch (error) {
-        console.lof(error);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function checkForUsername() {
-    if (username !== "") {
-      let res = /^[a-zA-Z0-9]+$/.test(username);
-      if(res){
-         if (users.map((user) => user.username).includes(username)) {
-           setErrorUsername("Username already taken");
-         } else {
-           setErrorUsername("");
-         }
-      }else{
-        setErrorUsername("only letters and numbers allowed");
-      }
-    } else {
-      setErrorUsername("username is required");
-    }
+  async function checkForUsername() {
+    setErrorUsername(await validateUsername(username));
   }
 
-  function validateEmail() {
-    const res = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-      String(email).toLowerCase()
-    );
-    return res;
-  }
-
-  function checkForEmail() {
-    if (email !== "") {
-      if (validateEmail()) {
-        if (users.map((user) => user.email).includes(email)) {
-          setErrorEmail("Email already exists");
-        } else {
-          setErrorEmail("");
-        }
-      } else {
-        setErrorEmail("Enter a valid email");
-      }
-    } else {
-      setErrorEmail("Email is required");
-    }
+  async function checkForEmail() {
+    setErrorEmail(await validateEmail(email));
   }
 
   function checkForName() {
-    if (name !== "") {
-      let res = /^[a-zA-Z ]+$/.test(name);
-      if (res) {
-        setErrorName("");
-      } else {
-        setErrorName("Numbers not allowed for name");
-      }
-    } else {
-      setErrorName("Name is required");
-    }
+    setErrorName(validateName(name));
   }
 
   function checkForPassword() {
-    if (password !== "") {
-      if (password.length < 6) {
-        setErrorPassword("Password should be atleast 6 digits long");
-      } else {
-        let res = /[0-9]/.test(password);
-        if (res) {
-          setErrorPassword("");
-        } else {
-          setErrorPassword("passowrd must contain a number");
-        }
-      }
-    } else {
-      setErrorPassword("Password is required");
-    }
+    setErrorPassword(validatePassword(password));
   }
 
-  async function registerHandler() {
+  async function signupHandler() {
     checkForPassword();
     checkForName();
     checkForEmail();
@@ -120,17 +59,22 @@ export default function Register() {
       errorEmail === "" &&
       errorName === "" &&
       errorPassword === "" &&
-      username && email && password && name
+      username &&
+      email &&
+      password &&
+      name
     ) {
-      const { id, success } = await registerUser(
+      const { token, success } = await singupUser(
         name,
         email,
         username,
         password
       );
       if (success) {
-        setWishlistData(id);
-        setCartData(id);
+        setLogin(true)
+        setToken(token)
+        setWishlistData();
+        setCartData();
         toastDispatch({ type: "SUCCESS_TOAST", payload: "Signup successfull" });
       } else {
         toastDispatch({ type: "ERROR_TOAST", payload: "Error signing up" });
@@ -205,7 +149,7 @@ export default function Register() {
       </label>
       <button
         className="btn btn-col btn-primary border-round btn-block"
-        onClick={() => registerHandler()}
+        onClick={() => signupHandler()}
       >
         Register
       </button>

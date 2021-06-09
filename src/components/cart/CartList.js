@@ -1,20 +1,20 @@
 import { useCart } from "../cart";
 import { CartCard } from "../cart";
 
+import {
+  calculateTotalDiscount,
+  calculateTotalMrp,
+  calculateTotalPrice,
+} from "../utilities/helper-functions/cartOperations";
+
 export default function CartList() {
   const { cartItems } = useCart();
 
-  const totalPrice = cartItems
-    .filter((cartItem) => cartItem.visible)
-    .reduce((total, item) => total = total + item.product.price * item.quantity, 0);
-  
-  const totalMrp = cartItems
-    .filter((cartItem) => cartItem.visible)
-    .reduce((total, item) => (total = total + item.product.mrp * item.quantity), 0);
-  
-  const totalDiscount = cartItems
-    .filter((cartItem) => cartItem.visible)
-    .reduce((total, item) => (total = total + (item.product.mrp - item.product.price) * item.quantity), 0);
+  const totalPrice = calculateTotalPrice(cartItems);
+
+  const totalMrp = calculateTotalMrp(cartItems);
+
+  const totalDiscount = calculateTotalDiscount(cartItems);
 
   return cartItems.filter((cartItem) => cartItem.visible).length > 0 ? (
     <div className="cart-page">
@@ -45,12 +45,10 @@ export default function CartList() {
               - Rs. {totalDiscount}
             </h1>
           </div>
-          <hr className="m-1-0" style={{"opacity": "0.2"}}/>
+          <hr className="m-1-0" style={{ opacity: "0.2" }} />
           <div className="price-info flex justify-sb mt-1">
             <h1 className="font-size-m light">Amount</h1>
-            <h1 className="font-size-m light">
-               Rs. {totalPrice}
-            </h1>
+            <h1 className="font-size-m light">Rs. {totalPrice}</h1>
           </div>
         </div>
       </div>

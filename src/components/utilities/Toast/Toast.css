@@ -1,0 +1,133 @@
+.notification-container {
+    font-size: 14px;
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 99;
+}
+
+.top-right {
+    top: 12px;
+    right: 12px;
+    transition: transform .6s ease-in-out;
+    animation: toast-in-right .7s;
+}
+
+.bottom-right {
+    bottom: 12px;
+    right: 2px;
+    transition: transform .6s ease-in-out;
+    animation: toast-in-right .4s;
+}
+
+.top-left {
+    top: 12px;
+    left: 12px;
+    transition: transform .6s ease-in;
+    animation: toast-in-left .7s;
+}
+
+.bottom-left {
+    bottom: 12px;
+    left: 12px;
+    transition: transform .6s ease-in;
+    animation: toast-in-left .7s;
+}
+
+.notification {
+	background: #fff;
+	transition: .3s ease;
+	position: relative;
+	pointer-events: auto;
+	overflow: hidden;
+	margin: 0 0 6px;
+	padding: 0.5rem;
+	margin-bottom: 15px;
+	width: 300px;
+	border-radius: 0.2rem;
+	box-shadow: 0 0 10px #999;
+	color: #000;
+	opacity: 1;
+	background-position: 15px;
+	background-repeat: no-repeat;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.notification:hover {
+	box-shadow: 0 0 12px #fff;
+	opacity: 1;
+	cursor: pointer
+}
+
+.notification-title {
+	font-weight: 700;
+	font-size: 16px;
+	text-align: left;
+	margin-top: 0;
+	margin-bottom: 6px;
+    width: 250px;
+    height: 18px;
+}
+
+.notification-message {
+	margin: 0;
+	text-align: left;
+    height: 18px;
+    margin-left: -1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.notification-image img {
+    width: 20px;
+    height: 20px;
+}
+
+.toast {
+    width: 300px;
+	color: #fff;
+	padding: 20px;
+    background-color: #03141f;
+}
+
+.success{
+    border-bottom: 6px solid #5cb85c;
+}
+
+.error{
+    border-bottom: 6px solid #d9534f;
+}
+
+.info{
+    border-bottom: 6px solid #5bc0de;
+}
+
+.warning{
+    border-bottom: 4px solid #f0ad4e;
+}
+
+.notification-container button {
+	font-weight: 700;
+	color: #fff;
+	outline: none;
+	border: none;
+	text-shadow: 0 1px 0 #fff;
+	opacity: 1;
+	line-height: 1;
+	font-size: 16px;
+	padding: 0;
+	cursor: pointer;
+	background-color: transparent;
+	border: 0
+}
+
+@keyframes toast-in-right {
+	from {
+	  transform: translateX(100%);
+	}
+	to {
+	  transform: translateX(0);
+	}
+}

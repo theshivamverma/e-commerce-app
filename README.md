@@ -11,8 +11,8 @@
 - useContext
 - useReducer
 
-###### Have added proper tests in the code
-###### Attempted to implement client-lie with proper faalback error management.
+##### Have added proper tests in the code
+##### Attempted to implement client-lie with proper fallback for error management.
 
 
 #### Welcome to The Healing Store
@@ -26,3 +26,8 @@
 - Product Description page with multiple images
 - Filter Products based on availabilty, shipping, category and price range
 - Sort Products based on price
+
+Dummy Credentials: 
+
+username: dummy
+password: dummy123

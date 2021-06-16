@@ -7,20 +7,20 @@ export default function filterReducer(state, { type, payload }) {
     case "SORT":
       return {
         ...state,
-        sort: payload,
+        sort: payload.sortType,
       };
     case "ADD_CATEGORY_TO_FILTER":
       return {
         ...state,
-        categories: [...state.categories, { type, payload }.payload],
+        categories: [...state.categories, payload.categoryName],
       };
     case "REMOVE_CATEGORY_FROM_FILTER":
       return {
         ...state,
-        categories: state.categories.filter((category) => category !== payload),
+        categories: state.categories.filter((category) => category !== payload.categoryName),
       };
     case "SET_PRICE_RANGE":
-      return { ...state, priceRange: payload };
+      return { ...state, priceRange: payload.priceLimit };
     case "CLEAR_SORT_FILTER":
       return { ...state, sort: null };
     default:

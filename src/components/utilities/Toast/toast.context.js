@@ -13,6 +13,14 @@ const intitialState = {
 export function ToastProvider({ children }) {
   const [state, dispatch] = useReducer(toastReducer, intitialState);
 
+   function callToast(toastType, toastMessage) {
+     dispatch({
+       type: toastType,
+       payload: { message: toastMessage },
+     });
+   }
+
+
   return (
     <ToastContext.Provider
       value={{
@@ -20,7 +28,7 @@ export function ToastProvider({ children }) {
         position: state.position,
         autoDelete: state.autoDelete,
         time: state.time,
-        toastDispatch: dispatch,
+        callToast
       }}
     >
       {children}

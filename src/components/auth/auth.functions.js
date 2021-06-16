@@ -20,21 +20,6 @@ export async function loginUser(username, password) {
 
 export async function singupUser(name, email, username, password) {
   try {
-    let cart, wishlist;
-    const { status: cartStatus, data: cartData } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_BASE_URL}/cart/add/new`,
-      {}
-    );
-    if (cartStatus === 200) {
-      cart = cartData.savedData._id;
-    }
-    const { status: wishlistStatus, data: wishlistData } = await axios.get(
-      `${process.env.REACT_APP_BACKEND_BASE_URL}/wishlist/add/new`,
-      {}
-    );
-    if (wishlistStatus === 200) {
-      wishlist = wishlistData.savedData._id;
-    }
     const { status: userStatus, data: userData } = await axios.post(
       `${process.env.REACT_APP_BACKEND_BASE_URL}/auth/signup`,
       {
@@ -43,8 +28,6 @@ export async function singupUser(name, email, username, password) {
           username,
           email,
           password,
-          cart,
-          wishlist,
         },
       }
     );

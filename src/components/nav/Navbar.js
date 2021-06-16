@@ -103,14 +103,14 @@ export default function Navbar({
               logoutUser()
               wishlistDispatch({
                 type: "LOAD_DATA",
-                payload: [],
+                payload: { wishlistData: []},
               });
-              wishlistDispatch({ type: "SET_WISHLIST_ID", payload: "" });
+              wishlistDispatch({ type: "SET_WISHLIST_ID", payload: { wishlistId: "" } });
               cartDispatch({
                 type: "LOAD_DATA",
-                payload: [],
+                payload: { cartData: []},
               });
-              cartDispatch({ type: "SET_CART_ID", payload: "" });
+              cartDispatch({ type: "SET_CART_ID", payload: { cartId: ""} });
             }}
           >
             Logout

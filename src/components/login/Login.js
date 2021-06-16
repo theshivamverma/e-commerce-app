@@ -15,7 +15,7 @@ export default function Login() {
   const { login, setLogin, setToken } = useAuth();
   const { setWishlistData } = useWishlist()
   const { setCartData } = useCart();
-  const { toastDispatch } = useToast();
+  const { callToast } = useToast();
 
   const { state } = useLocation();
 
@@ -39,6 +39,7 @@ export default function Login() {
     }
   }
 
+ 
   async function loginHandler(){
     checkForUsername()
     checkForPassword()
@@ -49,12 +50,12 @@ export default function Login() {
         setToken(token)
         setWishlistData()
         setCartData()
-        toastDispatch({ type: "SUCCESS_TOAST", payload: "Login successful" });
+        callToast("SUCCESS_TOAST", "Login successful");
       } else {
-        toastDispatch({ type: "ERROR_TOAST", payload: "Wrong credentials" });
+        callToast("ERROR_TOAST", "Wrong credentials");
       }
     }else{
-        toastDispatch({ type: "ERROR_TOAST", payload: "Enter proper credentials" });
+        callToast("ERROR_TOAST", "Enter proper credentials");
     }
   }
 

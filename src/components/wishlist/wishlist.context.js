@@ -24,7 +24,7 @@ export function WishlistProvider({ children }) {
         if (status === 200) {
           dispatch({
             type: "LOAD_DATA",
-            payload: data.wishlist.products,
+            payload: { wishlistData: data.wishlist.products },
           });
         }
       }
@@ -56,7 +56,7 @@ export function WishlistProvider({ children }) {
         `${process.env.REACT_APP_BACKEND_BASE_URL}/user/userdetail`
       );
       if (status === 200) {
-        dispatch({ type: "SET_WISHLIST_ID", payload: user.wishlist });
+        dispatch({ type: "SET_WISHLIST_ID", payload: { wishlistId: user.wishlist } });
       }
     } catch (error) {
       console.log(error);
@@ -73,9 +73,12 @@ export function WishlistProvider({ children }) {
       );
       if (status === 200) {
         getWishlistData();
+        return { success: true }
       }
     } catch (error) {
       console.log(error);
+      getWishlistData();
+      return { success: false }
     }
   }
 
@@ -89,9 +92,12 @@ export function WishlistProvider({ children }) {
       );
       if (status === 200) {
         getWishlistData();
+        return { success: true };
       }
     } catch (error) {
       console.log(error);
+      getWishlistData();
+      return { success: false };
     }
   }
 

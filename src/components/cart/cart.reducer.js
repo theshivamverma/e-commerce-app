@@ -1,14 +1,14 @@
 export default function cartReducer(state, { type, payload }) {
   switch (type) {
     case "SET_CART_ID":
-      return { ...state, cartId: payload };
+      return { ...state, cartId: payload.cartId };
     case "LOAD_DATA":
-      return { ...state, cart: payload };
+      return { ...state, cart: payload.cartData };
     case "ADD_TO_CART":
       return {
         ...state,
         cart: state.cart.concat({
-          product: payload,
+          product: payload.product,
           quantity: 1,
           visible: true,
         }),
@@ -17,7 +17,7 @@ export default function cartReducer(state, { type, payload }) {
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === payload) {
+          if (cartItem._id === payload.cartItemId) {
             return { ...cartItem, visible: !cartItem.visible, quantity: 1 };
           }
           return cartItem;
@@ -27,7 +27,7 @@ export default function cartReducer(state, { type, payload }) {
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === payload) {
+          if (cartItem._id === payload.cartItemId) {
             return { ...cartItem, quantity: cartItem.quantity + 1 };
           } else return cartItem;
         }),
@@ -36,7 +36,7 @@ export default function cartReducer(state, { type, payload }) {
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === payload) {
+          if (cartItem._id === payload.cartItemId) {
             return { ...cartItem, quantity: cartItem.quantity - 1 };
           } else return cartItem;
         }),
@@ -45,7 +45,7 @@ export default function cartReducer(state, { type, payload }) {
       return {
         ...state,
         cart: state.cart.map((cartItem) => {
-          if (cartItem._id === payload) {
+          if (cartItem._id === payload.cartItemId) {
             return { ...cartItem, visible: false };
           } else return cartItem;
         }),

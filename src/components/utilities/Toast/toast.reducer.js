@@ -8,7 +8,7 @@ export default function toastReducer(state, { type, payload }) {
         list: state.list.concat({
           id: uuid(),
           category: "success",
-          message: payload,
+          message: payload.message,
           icon: "fas fa-check-circle alertgreen",
         }),
       };
@@ -18,7 +18,7 @@ export default function toastReducer(state, { type, payload }) {
         list: state.list.concat({
           id: uuid(),
           category: "error",
-          message: payload,
+          message: payload.message,
           icon: "fas fa-exclamation-circle alertred",
         }),
       };
@@ -28,7 +28,7 @@ export default function toastReducer(state, { type, payload }) {
         list: state.list.concat({
           id: uuid(),
           category: "info",
-          message: payload,
+          message: payload.message,
           icon: "fas fa-info-circle alertblue",
         }),
       };
@@ -38,7 +38,7 @@ export default function toastReducer(state, { type, payload }) {
         list: state.list.concat({
           id: uuid(),
           category: "warning",
-          message: payload,
+          message: payload.message,
           icon: "fas fa-exclamation-triangle alertyellow",
         }),
       };

@@ -41,11 +41,11 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
 
   function setCategory(e, categoryName) {
     if (e.target.checked) {
-      filterDispatch({ type: "ADD_CATEGORY_TO_FILTER", payload: categoryName });
+      filterDispatch({ type: "ADD_CATEGORY_TO_FILTER", payload: { categoryName } });
     } else {
       filterDispatch({
         type: "REMOVE_CATEGORY_FROM_FILTER",
-        payload: categoryName,
+        payload: { categoryName },
       });
     }
   }
@@ -82,7 +82,7 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
             name="sort"
             checked={sort === "LOW_TO_HIGH"}
             onChange={() =>
-              filterDispatch({ type: "SORT", payload: "LOW_TO_HIGH" })
+              filterDispatch({ type: "SORT", payload: { sortType: "LOW_TO_HIGH"} })
             }
           />
         </span>
@@ -93,7 +93,7 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
             name="sort"
             checked={sort === "HIGH_TO_LOW"}
             onChange={() =>
-              filterDispatch({ type: "SORT", payload: "HIGH_TO_LOW" })
+              filterDispatch({ type: "SORT", payload: { sortType: "HIGH_TO_LOW" } })
             }
           />
         </span>
@@ -156,7 +156,7 @@ export default function Sidebar({ showFilterMenu, setShowFilterMenu }) {
               setPriceLimit(e.target.value);
               filterDispatch({
                 type: "SET_PRICE_RANGE",
-                payload: e.target.value,
+                payload: { priceLimit: e.target.value },
               });
             }}
           />

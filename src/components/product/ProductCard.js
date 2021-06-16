@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
     addToWishlist,
     removeFromWishlist,
   } = useWishlist();
-  const { toastDispatch } = useToast();
+  const { callToast } = useToast();
   const [isIncludedInWishlist, setIsIncludedInWishlist] = useState(false);
   const [inWishlistButInvisible, setInWishListButInvisible] = useState(false);
   const [currentWishlistItemId, setCurrentWishlistItemId] = useState("");
@@ -64,78 +64,81 @@ export default function ProductCard({ product }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, wishlist, cartItems]);
 
-  function wishlistClickHandler(product) {
+  async function wishlistClickHandler(product) {
     if (login) {
       if (isIncludedInWishlist) {
         setIsIncludedInWishlist(false);
-        toastDispatch({
-          type: "SUCCESS_TOAST",
-          payload: "Item removed from wishlist",
-        });
+
         wishlistDispatch({
           type: "REMOVE_FROM_WISHLIST",
-          payload: currentWishlistItemId,
+          payload: { wishlistItemId: currentWishlistItemId },
         });
-        removeFromWishlist(product._id);
+
+        const { success } = await removeFromWishlist(product._id);
+        if (success) {
+          callToast("SUCCESS_TOAST", "Item removed from wishlist");
+        } else {
+          callToast("ERROR_TOAST", "Something went wrong");
+        }
       } else {
         if (inWishlistButInvisible) {
-          toastDispatch({
-            type: "SUCCESS_TOAST",
-            payload: "Item added to wishlist",
-          });
           wishlistDispatch({
             type: "ADD_EXISTING_TO_WISHLIST",
-            payload: currentWishlistItemId,
+            payload: { wishlistItemId: currentWishlistItemId },
           });
-          addToWishlist(product._id);
+          const { success } = await addToWishlist(product._id);
+          if(success){
+            callToast("SUCCESS_TOAST", "Item added to wishlist");
+          }else{
+            callToast("ERROR_TOAST", "Something went wrong");
+          }
         } else {
-          toastDispatch({
-            type: "SUCCESS_TOAST",
-            payload: "Item added to wishlist",
-          });
           wishlistDispatch({
             type: "ADD_NEWITEM_TO_WISHLIST",
-            payload: product,
+            payload: { product },
           });
-          addToWishlist(product._id);
+          const { success } = await addToWishlist(product._id);
+          if (success) {
+            callToast("SUCCESS_TOAST", "Item added to wishlist");
+          } else {
+            callToast("ERROR_TOAST", "Something went wrong");
+          }
         }
       }
     } else {
-      toastDispatch({
-        type: "INFO_TOAST",
-        payload: "You are not logged in!",
-      });
+      callToast("INFO_TOAST", "You are not logged in!");
     }
   }
 
-  function cartClickHandler(product) {
+  async function cartClickHandler(product) {
     if (login) {
       if (isInCartButInvisible) {
         cartDispatch({
           type: "ADD_EXISTING_TO_CART",
-          payload: currentCartItemId,
+          payload: { cartItemId: currentCartItemId },
         });
-        toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
-        addToCart(product._id);
+        const { success } = await addToCart(product._id);
+         if (success) {
+           callToast("SUCCESS_TOAST", "Item added to cart");
+         } else {
+           callToast("ERROR_TOAST", "Something went wrong");
+         }
       } else {
-        cartDispatch({ type: "ADD_TO_CART", payload: product });
-        toastDispatch({ type: "SUCCESS_TOAST", payload: "Item added to cart" });
-        addToCart(product._id);
+        cartDispatch({ type: "ADD_TO_CART", payload: { product } });
+        const { success } = await addToCart(product._id);
+        if (success) {
+          callToast("SUCCESS_TOAST", "Item added to cart");
+        } else {
+          callToast("ERROR_TOAST", "Something went wrong");
+        }
       }
     } else {
-      toastDispatch({ type: "INFO_TOAST", payload: "You are not logged in!" });
+      callToast("INFO_TOAST", "You are not logged in!");
     }
   }
 
   return (
     <div className="card-product p-1 card-shadow">
-      {/* {product.tags.length > 0 && product.tags[0] !== "" && (
-        <div className="product-badge">
-          {product.tags[0]}
-          <span className="top-triangle"></span>
-          <span className="bottom-triangle"></span>
-        </div>
-      )} */}
       {!product.inStock && <div className="product-badge">Out of Stock</div>}
       <div className="product-img">
         <img alt="" src={product.images[0]} />

@@ -3,15 +3,15 @@ export default function wishlistReducer(state, { type, payload }) {
     case "SET_WISHLIST_ID":
       return {
         ...state,
-        wishlistId: payload,
+        wishlistId: payload.wishlistId,
       };
     case "LOAD_DATA":
-      return { ...state, wishlist: payload };
+      return { ...state, wishlist: payload.wishlistData };
     case "ADD_NEWITEM_TO_WISHLIST":
       return {
         ...state,
         wishlist: state.wishlist.concat({
-          product: payload,
+          product: payload.product,
           visible: true,
         }),
       };
@@ -19,7 +19,7 @@ export default function wishlistReducer(state, { type, payload }) {
       return {
         ...state,
         wishlist: state.wishlist.map((wishlistItem) => {
-          if (wishlistItem._id === payload) {
+          if (wishlistItem._id === payload.wishlistItemId) {
             return { ...wishlistItem, visible: true };
           } else return wishlistItem;
         }),
@@ -28,7 +28,7 @@ export default function wishlistReducer(state, { type, payload }) {
       return {
         ...state,
         wishlist: state.wishlist.map((wishlistItem) => {
-          if (wishlistItem._id === payload) {
+          if (wishlistItem._id === payload.wishlistItemId) {
             return { ...wishlistItem, visible: false };
           }
           return wishlistItem;

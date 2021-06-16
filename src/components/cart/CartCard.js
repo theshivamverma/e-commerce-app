@@ -12,7 +12,7 @@ export default function CartCard({ cartItem }) {
     removeCartItem,
   } = useCart();
   const { wishlist, addToWishlist, wishlistDispatch } = useWishlist();
-  const { toastDispatch } = useToast();
+  const { callToast } = useToast();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInWishlistButInvisible, setIsInWishlistButInvisible] = useState(
     false
@@ -36,43 +36,79 @@ export default function CartCard({ cartItem }) {
     checkForWishlist();
   }, [wishlist]);
 
-  function wishlistClickHandler(cartItem) {
+  async function wishlistClickHandler(cartItem) {
     if (isInWishlist === false) {
       if (isInWishlistButInvisible) {
         wishlistDispatch({
           type: "ADD_EXISTING_TO_WISHLIST",
-          payload: currentWishlistItemId,
+          payload: { wishlistItemId: currentWishlistItemId },
         });
       } else {
         wishlistDispatch({
           type: "ADD_NEWITEM_TO_WISHLIST",
-          payload: cartItem.product,
+          payload: { product: cartItem.product },
         });
       }
     }
-    addToWishlist(cartItem.product._id);
-    toastDispatch({ type: "SUCCESS_TOAST", payload: "Item moved to wishlist" });
+    const { success } = await addToWishlist(cartItem.product._id);
+    if(success){
+      callToast("SUCCESS_TOAST", "Item moved to wishlist");
+    }else{
+      callToast("ERROR_TOAST", "Something went wrong !");
+    }
   }
 
-  function removeClickHandler(cartItem){
+  async function removeClickHandler(cartItem){
     cartDispatch({
       type: "REMOVE_CART_ITEM",
-      payload: cartItem._id,
+      payload: { cartItemId: cartItem._id },
     });
-    toastDispatch({
-      type: "SUCCESS_TOAST",
-      payload: "Item removed from cart",
-    });
-    removeCartItem(cartItem.product._id);
+    const { success } = await removeCartItem(cartItem.product._id);
+    if (success) {
+      callToast("SUCCESS_TOAST", "Item removed from cart");
+    } else {
+      callToast("ERROR_TOAST", "Something went wrong !");
+    }
   }
 
-  function moveToWishlistClickHandler(cartItem){
+  async function moveToWishlistClickHandler(cartItem){
     cartDispatch({
       type: "REMOVE_CART_ITEM",
-      payload: cartItem._id,
+      payload: { cartItemId: cartItem._id },
     });
-    removeCartItem(cartItem.product._id);
+    const { success } = await removeCartItem(cartItem.product._id);
+    if (success) {
+      callToast("SUCCESS_TOAST", "Item removed from cart");
+    } else {
+      callToast("ERROR_TOAST", "Something went wrong !");
+    }
     wishlistClickHandler(cartItem);
+  }
+
+  async function incrementHandler(productId) {
+    cartDispatch({
+      type: "INCREASE_QUANTITY",
+      payload: { cartItemId: cartItem._id },
+    });
+    const { success } = await increaseQuantity(productId);
+    if (success) {
+      callToast("SUCCESS_TOAST", "Item quantity increased");
+    } else {
+      callToast("ERROR_TOAST", "Something went wrong !");
+    }
+  }
+
+  async function decrementHandler(productId){
+    cartDispatch({
+      type: "DECREASE_QUANTITY",
+      payload: { cartItemId: cartItem._id },
+    });
+    const { success } = await decreaseQuantity(productId);
+     if (success) {
+       callToast("SUCCESS_TOAST", "Item quantity decreased");
+     } else {
+       callToast("ERROR_TOAST", "Something went wrong !");
+     }
   }
 
   return (
@@ -90,13 +126,7 @@ export default function CartCard({ cartItem }) {
               <button
                 className="btn btn-icon btn-cart"
                 disabled={cartItem.quantity > 1 ? false : true}
-                onClick={() => {
-                  cartDispatch({
-                    type: "DECREASE_QUANTITY",
-                    payload: cartItem._id,
-                  });
-                  decreaseQuantity(cartItem.product._id);
-                }}
+                onClick={() => decrementHandler(cartItem.product._id)}
               >
                 <i className="fas fa-minus icon-xxsm"></i>
               </button>
@@ -105,13 +135,7 @@ export default function CartCard({ cartItem }) {
               </h2>
               <button
                 className="btn btn-icon btn-cart"
-                onClick={() => {
-                  cartDispatch({
-                    type: "INCREASE_QUANTITY",
-                    payload: cartItem._id,
-                  });
-                  increaseQuantity(cartItem.product._id);
-                }}
+                onClick={() => incrementHandler(cartItem.product._id)}
               >
                 <i className="fas fa-plus icon-xxsm"></i>
               </button>
@@ -134,7 +158,8 @@ export default function CartCard({ cartItem }) {
           <h2 className="price">{`Rs. ${cartItem.product.price}`}</h2>
           <span className="price-cut">{`Rs. ${cartItem.product.mrp}`}</span>
           <span className="discount">{`(${Math.floor(
-            ((cartItem.product.mrp - cartItem.product.price) * 100) / cartItem.product.mrp
+            ((cartItem.product.mrp - cartItem.product.price) * 100) /
+              cartItem.product.mrp
           )}% Off)`}</span>
         </div>
       </div>

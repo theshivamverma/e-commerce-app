@@ -1,4 +1,4 @@
-export { AuthProvider, useAuth } from "./auth-context";
+export { AuthProvider, useAuth } from "./auth.context";
 export { default as PrivateRoute } from "./PrivateRoute";
 export {
   loginUser,
@@ -6,4 +6,4 @@ export {
   setupAuthExceptionHandler,
   setupAuthHeaderForServiceCalls,
   logoutUser,
-} from "./auth-functions";
+} from "./auth.functions";

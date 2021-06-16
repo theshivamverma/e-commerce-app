@@ -24,10 +24,10 @@ export default function Register() {
   const [errorName, setErrorName] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
 
-  const { login, setLogin } = useAuth();
+  const { login, setLogin, setToken } = useAuth();
   const { setWishlistData } = useWishlist();
   const { setCartData } = useCart();
-  const { toastDispatch } = useToast();
+  const { callToast } = useToast();
 
   const navigate = useNavigate();
 
@@ -75,15 +75,15 @@ export default function Register() {
         setToken(token)
         setWishlistData();
         setCartData();
-        toastDispatch({ type: "SUCCESS_TOAST", payload: "Signup successfull" });
+        callToast("SUCCESS_TOAST", "Signup successfull" );
       } else {
-        toastDispatch({ type: "ERROR_TOAST", payload: "Error signing up" });
+        callToast("ERROR_TOAST", "Error signing up" );
       }
     } else {
-      toastDispatch({
-        type: "ERROR_TOAST",
-        payload: "Invalid credentials for signup",
-      });
+      callToast(
+        "ERROR_TOAST",
+        "Invalid credentials for signup",
+      );
     }
   }
 

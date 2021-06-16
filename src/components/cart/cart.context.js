@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { cartReducer } from "../cart";
+import { cartReducer } from ".";
 
 const CartContext = createContext();
 
@@ -37,7 +37,7 @@ export function CartProvider({ children }) {
           {}
         );
         if (status === 200) {
-          dispatch({ type: "LOAD_DATA", payload: data.cart.products });
+          dispatch({ type: "LOAD_DATA", payload:{ cartData: data.cart.products }});
         }
       }
     } catch (error) {
@@ -54,7 +54,7 @@ export function CartProvider({ children }) {
         `${process.env.REACT_APP_BACKEND_BASE_URL}/user/userdetail`
       );
       if (status === 200) {
-        dispatch({ type: "SET_CART_ID", payload: user.cart });
+        dispatch({ type: "SET_CART_ID", payload: { cartId: user.cart } });
       }
     } catch (error) {
       console.log(error);
@@ -71,9 +71,12 @@ export function CartProvider({ children }) {
       );
       if (status === 200) {
         getCartData();
+        return { success: true };
       }
     } catch (error) {
       console.log(error);
+      getCartData();
+      return { success: false };
     }
   }
 
@@ -85,12 +88,14 @@ export function CartProvider({ children }) {
           prodId,
         }
       );
-
       if (status === 200) {
         getCartData();
+        return { success: true };
       }
     } catch (error) {
       console.log(error);
+      getCartData();
+      return { success: false };
     }
   }
 
@@ -104,9 +109,12 @@ export function CartProvider({ children }) {
       );
       if (status === 200) {
         getCartData();
+        return { success: true };
       }
     } catch (error) {
       console.log(error);
+      getCartData();
+      return { success: false };
     }
   }
 
@@ -120,9 +128,12 @@ export function CartProvider({ children }) {
       );
       if (status === 200) {
         getCartData();
+        return { success: true }
       }
     } catch (error) {
       console.log(error);
+      getCartData();
+      return { success: false };
     }
   }
 

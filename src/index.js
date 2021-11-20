@@ -1,17 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { ProductProvider } from "./components/product";
+import { CartProvider } from "./components/cart";
+import { FilterProvider } from "./components/filters";
+import { AuthProvider } from "./components/auth";
+import { WishlistProvider } from "./components/wishlist";
+import { ToastProvider } from "./components/utilities/Toast"
+import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ProductProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <FilterProvider>
+            <AuthProvider>
+              <ToastProvider>
+                <Router>
+                  <App />
+                </Router>
+              </ToastProvider>
+            </AuthProvider>
+          </FilterProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </ProductProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
